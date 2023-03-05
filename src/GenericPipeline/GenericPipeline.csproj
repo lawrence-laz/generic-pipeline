@@ -1,9 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>GenericPipeline</RootNamespace>
+
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <Company>Laurynas Lazauskas</Company>
+        <Authors>Laurynas Lazauskas</Authors>
+        <Product>GenericPipeline</Product>
+        <Description>TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageId>GenericPipeline</PackageId>
+        <PackageProjectUrl>https://github.com/lawrence-laz/generic-pipeline</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/lawrence-laz/generic-pipeline</RepositoryUrl>
+        <PackageTags>pipeline;mediator;aop;functional</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Copyright>Copyright 2023</Copyright>
+        <Version>0.0.1-preview</Version>
+        <RepositoryType>git</RepositoryType>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../readme.md" Pack="true" PackagePath="" />
+        <None Include="../../images/icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>

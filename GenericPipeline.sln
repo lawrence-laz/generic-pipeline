@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CB14243C-5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericPipeline.Tests", "test\GenericPipeline.Tests\GenericPipeline.Tests.csproj", "{E514407E-0DDF-4A8D-AE31-EDAAA19134D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericPipeline.Benchmarks", "test\GenericPipeline.Benchmarks\GenericPipeline.Benchmarks.csproj", "{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{E514407E-0DDF-4A8D-AE31-EDAAA19134D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E514407E-0DDF-4A8D-AE31-EDAAA19134D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E514407E-0DDF-4A8D-AE31-EDAAA19134D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{07BBC620-22D0-467B-9139-26DBA37C8EEA} = {10FE064E-6730-43AC-BCD2-D206A9DC4A6A}
 		{E514407E-0DDF-4A8D-AE31-EDAAA19134D5} = {CB14243C-54DB-4A49-A6EE-4840E68D36AA}
+		{346F44D2-F7B8-4FF8-B5D9-890B1F02E0C4} = {CB14243C-54DB-4A49-A6EE-4840E68D36AA}
 	EndGlobalSection
 EndGlobal
