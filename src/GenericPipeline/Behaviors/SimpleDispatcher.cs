@@ -1,7 +1,7 @@
 namespace GenericPipeline.Behaviors;
 
 /// TODO
-public class SimpleDispatcher<TRequestHandler> : FinalPipelineBehavior
+public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
 {
     private readonly TRequestHandler _handler;
 

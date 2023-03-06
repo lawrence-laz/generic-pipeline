@@ -3,13 +3,7 @@ namespace GenericPipeline;
 public abstract class PipelineBehavior
 {
     /// TODO
-    private readonly PipelineBehavior next;
-
-    /// TODO
-    public PipelineBehavior(PipelineBehavior next)
-    {
-        this.next = next;
-    }
+    public PipelineBehavior? Next { get; internal set; }
 
     /// TODO
     public abstract TResponse Handle<TRequest, TResponse>(
@@ -19,9 +13,9 @@ public abstract class PipelineBehavior
     /// TODO
     protected TResponse HandleNext<TRequest, TResponse>(TRequest request) where TRequest : IRequest<TResponse>
     {
-        if (next is not null)
+        if (Next is not null)
         {
-            return next.Handle<TRequest, TResponse>(request);
+            return Next.Handle<TRequest, TResponse>(request);
         }
         else
         {

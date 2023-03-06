@@ -8,3 +8,9 @@ public interface IRequestHandler<TRequest, TResponse>
     TResponse Handle(TRequest request);
 }
 
+/// TODO
+public interface IRequestHandler<TRequest> : IRequestHandler<TRequest, Unit>
+    where TRequest : IRequest<Unit>
+{
+}
+
