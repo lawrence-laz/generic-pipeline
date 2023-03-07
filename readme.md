@@ -12,9 +12,11 @@ https://en.wikipedia.org/wiki/Pipeline_(software)
 
 ## TODO
 - [ ] publish to NuGet as a preview package 
-- [ ] create a builder for pipeline
+- [x] create a builder for pipeline
 - [ ] create dependency injection extensions, where providing a servicebuilder you can resolve behavior
+- [ ] async implementation
 - [ ] finish readme
+    - semantic versioning
 - [ ] document IRequest and IRequestHandlers and their purpose
     - shows explicitly what is the expected return type for a request
     - provides compile-time check for request return type for all calls (oh c#, if you can validate, why don't you infer...)
@@ -25,7 +27,7 @@ https://en.wikipedia.org/wiki/Pipeline_(software)
     - [ ] decoration
     - [ ] chain of responsibility
     - [ ] middleware 
-    - [ ] mediator
+    - [x] mediator
         - notice, this is not a mediator in itself, it can be, if your final handler will be implemented as a dispatcher that will "mediate" the incoming requests to appropriate receivers, but you would have to implement such dispatcher yourself. Instead, this is a tool to build pipline-line systems composed of behaviors, and meadiator pattern is just one of the things you can do with it.
         - maybe provide and example of how mediator could be implemented?
     - [ ] supports single responsibility principle
