@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, 'releases/**'  ]
+  pull_request:
+    branches: [ main, 'releases/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test and generate coverage report
+      run: |
+        cd ./test/GenericPipeline.Tests
+        dotnet build
+        dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover
+        cd ./TestResults/
+        mv ./coverage.opencover.xml ./opencover.xml
+    - name: Publish coverage report to Codacity
+      uses: codacy/codacy-coverage-reporter-action@master
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
