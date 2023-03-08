@@ -10,11 +10,20 @@ using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using PipelineNet.MiddlewareResolver;
+
+using GenericPipelineAsyncScenario = GenericPipeline.Benchmarks.GenericPipelineAsyncScenario;
 using GenericPipelineScenario = GenericPipeline.Benchmarks.GenericPipelineScenario;
+using MediatrAsyncScenario = GenericPipeline.Benchmarks.MediatrScenarioAsync;
 using MediatrScenario = GenericPipeline.Benchmarks.MediatrScenario;
 using MethodCallScenario = GenericPipeline.Benchmarks.MethodCallScenario;
+using PipelineNetAsyncScenario = GenericPipeline.Benchmarks.PipelineNetAsyncScenario;
+using PipelineNetScenario = GenericPipeline.Benchmarks.PipelineNetScenario;
 
 BenchmarkRunner.Run<BenchmarkTest>();
+// var test = new BenchmarkTest();
+// test.Setup();
+// await test.GenericPipelineAsync();
 
 [SimpleJob(RuntimeMoniker.Net60)]
 [MemoryDiagnoser]
@@ -24,8 +33,11 @@ public class BenchmarkTest
     public void Setup()
     {
         SetupGenericPipeline();
+        SetupGenericPipelineAsync();
         SetupMediatr();
-        SetupMediatrSingleton();
+        SetupMediatrAsync();
+        SetupPipelineNet();
+        SetupPipelineNetAsync();
     }
 
     [Benchmark(Baseline = true)]
@@ -33,6 +45,13 @@ public class BenchmarkTest
     {
         MethodCallScenario.StaticMethods.DoWorkBehavior();
         MethodCallScenario.StaticMethods.DoWorkRequest();
+    }
+
+    [Benchmark()]
+    public async Task MethodCallAsync()
+    {
+        await MethodCallScenario.StaticMethods.DoWorkBehaviorAsync();
+        await MethodCallScenario.StaticMethods.DoWorkRequestAsync();
     }
 
     Pipeline _pipeline;
@@ -49,11 +68,26 @@ public class BenchmarkTest
         _pipeline.Send<GenericPipelineScenario.DoWorkRequest, GenericPipeline.Unit>(new());
     }
 
-    [Benchmark]
-    public void GenericPipeline_MediatR_Style()
+
+    PipelineAsync _pipelineAsync;
+    private void SetupGenericPipelineAsync()
     {
-        _pipeline.Send(new GenericPipelineScenario.DoWorkRequest());
+        _pipelineAsync = new PipelineAsync()
+            .AppendBehavior<GenericPipelineAsyncScenario.DoWorkBehavior>()
+            .AppendHandler<GenericPipelineAsyncScenario.DoWorkHandler>();
     }
+
+    [Benchmark]
+    public async Task GenericPipelineAsync()
+    {
+        await _pipelineAsync.Send<GenericPipelineAsyncScenario.DoWorkRequest, GenericPipeline.Unit>(new());
+    }
+
+    // [Benchmark]
+    // public void GenericPipeline_MediatR_Style()
+    // {
+    //     _pipeline.Send(new GenericPipelineScenario.DoWorkRequest());
+    // }
 
     IServiceProvider _services;
     IMediator _mediator;
@@ -62,6 +96,7 @@ public class BenchmarkTest
         _services = new ServiceCollection()
             .AddMediatR(options =>
             {
+                options.Lifetime = ServiceLifetime.Singleton;
                 options.RegisterServicesFromAssembly(typeof(Program).Assembly);
                 options.AddOpenBehavior(typeof(MediatrScenario.DoWorkBehavior<,>));
             })
@@ -70,30 +105,59 @@ public class BenchmarkTest
     }
 
     [Benchmark]
-    public void MediatR()
+    public async Task MediatR()
     {
-        _mediator.Send(new MediatrScenario.DoWorkRequest());
+        await _mediator.Send(new MediatrScenario.DoWorkRequest());
     }
 
-    IServiceProvider _servicesMediatrSingleton;
-    IMediator _mediatorSingleton;
-    private void SetupMediatrSingleton()
+    IServiceProvider _servicesMediatrAsync;
+    IMediator _mediatorAsync;
+    private void SetupMediatrAsync()
     {
-        _servicesMediatrSingleton = new ServiceCollection()
+        _servicesMediatrAsync = new ServiceCollection()
             .AddMediatR(options =>
             {
                 options.Lifetime = ServiceLifetime.Singleton;
                 options.RegisterServicesFromAssembly(typeof(Program).Assembly);
-                options.AddOpenBehavior(typeof(MediatrScenario.DoWorkBehavior<,>));
+                options.AddOpenBehavior(typeof(MediatrAsyncScenario.DoWorkBehavior<,>));
             })
             .BuildServiceProvider();
-        _mediatorSingleton = _servicesMediatrSingleton.GetRequiredService<IMediator>();
+        _mediatorAsync = _servicesMediatrAsync.GetRequiredService<IMediator>();
     }
 
     [Benchmark]
-    public void MediatR_Singleton()
+    public async Task MediatRAsync()
     {
-        _mediatorSingleton.Send(new MediatrScenario.DoWorkRequest());
+        await _mediatorAsync.Send(new MediatrAsyncScenario.DoWorkRequest());
+    }
+
+    PipelineNet.Pipelines.IPipeline<PipelineNetScenario.DoWorkRequest> _pipelineNet;
+    private void SetupPipelineNet()
+    {
+        _pipelineNet = new PipelineNet.Pipelines.Pipeline<PipelineNetScenario.DoWorkRequest>(new ActivatorMiddlewareResolver())
+            .Add<PipelineNetScenario.DoWorkBehavior>()
+            .Add<PipelineNetScenario.DoWorkHandler>();
+    }
+
+    [Benchmark]
+    public void PipelineNet()
+    {
+        _pipelineNet.Execute(new());
+    }
+
+
+    PipelineNet.Pipelines.IAsyncPipeline<PipelineNetAsyncScenario.DoWorkRequest> _pipelineNetAsync;
+    private void SetupPipelineNetAsync()
+    {
+        _pipelineNetAsync = new PipelineNet.Pipelines.AsyncPipeline<PipelineNetAsyncScenario.DoWorkRequest>(new ActivatorMiddlewareResolver())
+            .Add<PipelineNetAsyncScenario.DoWorkBehavior>()
+            .Add<PipelineNetAsyncScenario.DoWorkHandler>();
+    }
+
+    [Benchmark]
+    public async Task PipelineNetAsync()
+    {
+        await _pipelineNetAsync.Execute(new());
     }
 }
 

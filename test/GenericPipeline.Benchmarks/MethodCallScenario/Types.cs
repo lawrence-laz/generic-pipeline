@@ -11,5 +11,15 @@ public static class StaticMethods
     {
         Workload.DoWork();
     }
+
+    public static async Task DoWorkRequestAsync()
+    {
+        await Workload.DoWorkAsync();
+    }
+
+    public static async Task DoWorkBehaviorAsync()
+    {
+        await Workload.DoWorkAsync();
+    }
 }
 
