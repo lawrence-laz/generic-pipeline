@@ -1,0 +1,51 @@
+## TODO
+
+- [ ] Publish to NuGet as a preview package 
+- [ ] Dependency injection package 
+    - [x] Create dependency injection extensions, where providing a servicebuilder you can resolve behavior
+    - [ ] Consider providing a scanner in a format of `.AddGenericPipeline`
+- [ ] Cover everything with tests
+- [ ] Fix code smells
+- [ ] Provide examples on how to implement various patterns, principles and paradigms:
+    - [ ] Dynamic dispatch (proxy)
+    - [ ] Decoration
+    - [ ] Chain of responsibility
+    - [ ] Middleware 
+    - [ ] Logging all requests 
+    - [ ] OpenTelemetry
+    - [ ] Fluent validation https://github.com/FluentValidation/FluentValidation
+    - [ ] Profiler 
+        - simple console
+        - prometheus https://github.com/prometheus-net/prometheus-net
+        - https://github.com/MiniProfiler/dotnet
+    - [ ] Caching (polly?)
+        - Polly
+        - https://www.nuget.org/packages/LazyCache/
+        - Microsoft in memory
+    - [ ] Maybe an example of all Polly policies? 
+    - [ ] Out of process communication 
+- [ ] Consider renaming "behavrior" to "middleware"
+- [ ] Finish readme.md:
+    - [ ] Main building blocks
+    - [ ] Semantic versioning
+    - [ ] Document IRequest and IRequestHandlers and their purpose
+        - Shows explicitly what is the expected return type for a request
+        - Provides compile-time check for request return type for all calls (oh c#, if you can validate, why don't you infer...)
+    - [ ] Use pipeline pattern terminology to reason about this package in description, so it would use familiar language to the industry. 
+    - [ ] Does not rely on dependency injection, but is compatible with it
+    - [ ] Write a section about c#'s lack of inference from generic constraints, and why that needs to specify generic type, but show much faster it is and enabled zero allocation struct records.
+    - [ ] Supports single responsibility principle
+    - [ ] Compare to ASP.net core Middleware-like programming, just for any other class besides controllers
+    - [ ] Behaviors are generic, meaning single behavior can be reused across pipelines/request types 
+    - [ ] Examples section:
+        - Mediator, notice, this is not a mediator in itself, it can be, if your final handler will be implemented as a dispatcher that will "mediate" the incoming requests to appropriate receivers, but you would have to implement such dispatcher yourself. Instead, this is a tool to build pipline-line systems composed of behaviors, and meadiator pattern is just one of the things you can do with it.
+        - Other links
+    - [ ] Benchmarks section:
+        - [ ] Generic behaviors and handlers allow passing around struct requests without boxing (zero allocations)
+- [ ] Add missing in-code summary documentation.
+- [ ] Create documentation in GitHub wiki, or GitHub pages
+- [ ] `.ThrowOnUnhandled` - behavior that sits at the end and if noone handles the request it throws at the end
+- [ ] Add methods to add behaviors after and before another behavior
+    - AddBefore<TBehavior>(PipelineBehavior behavior)
+    - AddAfter<TBehavior>(PipelineBehavior behavior)
+- [ ] Compare to https://github.com/BrighterCommand/Brighter
