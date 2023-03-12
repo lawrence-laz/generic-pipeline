@@ -49,3 +49,4 @@
     - AddBefore<TBehavior>(PipelineBehavior behavior)
     - AddAfter<TBehavior>(PipelineBehavior behavior)
 - [ ] Compare to https://github.com/BrighterCommand/Brighter
+- [ ] AppendPipeline, fork node, etc. for composing pipelines into systems
