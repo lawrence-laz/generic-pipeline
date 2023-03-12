@@ -24,6 +24,7 @@
         - Microsoft in memory
     - [ ] Maybe an example of all Polly policies? 
     - [ ] Out of process communication 
+    - [ ] Add readme.md for each example
 - [ ] Consider renaming "behavrior" to "middleware"
 - [ ] Finish readme.md:
     - [ ] Main building blocks

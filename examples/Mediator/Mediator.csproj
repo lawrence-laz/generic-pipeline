@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GenericPipeline\GenericPipeline.csproj" />
+    <PackageReference Include="GenericPipeline" Version="0.0.1-preview" />
   </ItemGroup>
 
   <PropertyGroup>
