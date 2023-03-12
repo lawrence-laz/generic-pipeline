@@ -11,12 +11,20 @@
 A general purpose dependency free pipeline builder.
 https://en.wikipedia.org/wiki/Pipeline_(software)
 
+> ⚠️ This project is in active development and it's a **work in progress**. Bugs and breaking changes are to be expected while in prerelease. [Semantic versioning](https://semver.org/) and stable api is to be expected starting from `v1.0` only.
+
 ## 🌟 Features
 - **Simplicity**: Designed with simplicity in mind, the library offers a straightforward and easy-to-use pipeline implementation.
 - **High Performance**: The library boasts exceptional performance, as demonstrated by its benchmark results.
 - **No Dispatch-Time Allocations**: With the exception of async `Task`, the library makes no dispatch-time allocations, thus providing a highly efficient pipeline implementation.
 - **No Reflection**: The library avoids using reflection, providing a faster and more secure pipeline implementation.
 - **No Dependencies**: The library has zero external dependencies, making it lightweight and easy to integrate with other projects.
+
+## 📦️ Get started
+Download from [nuget.org](https://www.nuget.org/packages/GenericPipeline/0.0.1-preview):
+```
+dotnet add package GenericPipeline --prerelease
+```
 
 ## ⚡️ Benchmarks
 |                 Method  |       Mean | Allocated |
