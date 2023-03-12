@@ -1,4 +1,4 @@
-name: Publish GenericPipeline to nuget.org
+name: Publish GenericPipeline.Extensions.DependencyInjection to nuget.org
 on: 
   workflow_dispatch:
 
@@ -15,10 +15,10 @@ jobs:
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
-          PROJECT_FILE_PATH: src/GenericPipeline/GenericPipeline.csproj
+          PROJECT_FILE_PATH: src/GenericPipeline.Extensions.DependencyInjection/GenericPipeline.Extensions.DependencyInjection.csproj 
 
           # NuGet package id, used for version detection & defaults to project name
-          PACKAGE_NAME: GenericPipeline
+          PACKAGE_NAME: GenericPipeline.Extensions.DependencyInjection
           
           # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
           # VERSION_FILE_PATH: Directory.Build.props

@@ -1,5 +1,6 @@
 ﻿namespace GenericPipeline.Extensions.DependencyInjection;
 
+/// TODO
 public static class PipelineExtensions
 {
     /// TODO

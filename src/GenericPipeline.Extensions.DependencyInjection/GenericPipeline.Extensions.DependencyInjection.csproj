@@ -1,15 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-        <ProjectReference Include="..\GenericPipeline\GenericPipeline.csproj" />
-    </ItemGroup>
-
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>GenericPipeline.Extensions.DependencyInjection</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Company>Laurynas Lazauskas</Company>
+        <Authors>Laurynas Lazauskas</Authors>
+        <Product>GenericPipeline.Extensions.DependencyInjection</Product>
+        <Description>A general purpose, simple and fast pipeline builder.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageId>GenericPipeline.Extensions.DependencyInjection</PackageId>
+        <PackageProjectUrl>https://github.com/lawrence-laz/generic-pipeline</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/lawrence-laz/generic-pipeline</RepositoryUrl>
+        <PackageTags>pipeline;mediator;aop;functional</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Copyright>Copyright 2023</Copyright>
+        <Version>0.0.1-preview</Version>
+        <RepositoryType>git</RepositoryType>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GenericPipeline" Version="0.0.1-preview" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../images/icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>

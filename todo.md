@@ -1,6 +1,6 @@
 ## TODO
 
-- [ ] Publish to NuGet as a preview package 
+- [x] Publish to NuGet as a preview package 
 - [ ] Dependency injection package 
     - [x] Create dependency injection extensions, where providing a servicebuilder you can resolve behavior
     - [ ] Consider providing a scanner in a format of `.AddGenericPipeline`
