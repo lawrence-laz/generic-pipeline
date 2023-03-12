@@ -11,7 +11,7 @@
     - [ ] Decoration
     - [ ] Chain of responsibility
     - [ ] Middleware 
-    - [ ] Logging all requests 
+    - [x] Logging all requests 
     - [ ] OpenTelemetry
     - [ ] Fluent validation https://github.com/FluentValidation/FluentValidation
     - [ ] Profiler 
