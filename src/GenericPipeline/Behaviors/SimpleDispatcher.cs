@@ -4,11 +4,13 @@ namespace GenericPipeline.Behaviors;
 public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
 {
     private readonly TRequestHandler _handler;
+    private readonly HandlerOptions _options;
 
     /// TODO
-    public SimpleDispatcher(TRequestHandler handler)
+    public SimpleDispatcher(TRequestHandler handler, HandlerOptions options)
     {
         _handler = handler;
+        _options = options;
     }
 
     /// TODO
@@ -18,12 +20,32 @@ public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
         {
             return handler.Handle(request);
         }
-        else
+        else if (_options.ThrowUhandledRequestType)
         {
             throw new InvalidOperationException(
-                $"Handler '{typeof(TRequestHandler).FullName}' does not accept" +
+                $"Handler '{typeof(TRequestHandler).FullName}' does not accept " +
                 $"requests of type '{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");
         }
+        else
+        {
+            return HandleNext<TRequest, TResponse>(request);
+        }
     }
+}
+
+
+/// <summary>
+/// Options for the <see cref="SimpleDispatcher{TRequestHandler}"/> class.
+/// </summary>
+public sealed class HandlerOptions
+{
+    /// TODO
+    public static readonly HandlerOptions Default = new()
+    {
+        ThrowUhandledRequestType = false
+    };
+
+    /// TODO
+    public bool ThrowUhandledRequestType;
 }
 
