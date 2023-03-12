@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Install dependencies
-      run: dotnet restore --force --force-evaluate --no-cache --verbosity diagnostic
+      run: dotnet restore --force --force-evaluate --no-cache
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test and generate coverage report
