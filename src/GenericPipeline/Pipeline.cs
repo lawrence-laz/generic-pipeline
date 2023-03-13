@@ -24,7 +24,7 @@ public sealed class Pipeline
 
         return this;
     }
-    
+
     /// TODO
     public Pipeline PrependBehavior<TBehavior>(TBehavior instance) where TBehavior : PipelineBehavior
     {
@@ -56,6 +56,18 @@ public sealed class Pipeline
         }
 
         return _firstBehavior.Handle<TRequest, TResponse>(request);
+    }
+
+    /// TODO
+    public Unit Send<TRequest>(TRequest request)
+        where TRequest : IRequest<Unit>
+    {
+        if (_firstBehavior is null)
+        {
+            throw new System.Exception("TODO");
+        }
+
+        return _firstBehavior.Handle<TRequest, Unit>(request);
     }
 
     /// TODO

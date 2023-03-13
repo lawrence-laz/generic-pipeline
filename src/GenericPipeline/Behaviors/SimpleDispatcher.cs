@@ -22,6 +22,7 @@ public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
         }
         else if (_options.ThrowUhandledRequestType)
         {
+            // TODO proper exception?
             throw new InvalidOperationException(
                 $"Handler '{typeof(TRequestHandler).FullName}' does not accept " +
                 $"requests of type '{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");

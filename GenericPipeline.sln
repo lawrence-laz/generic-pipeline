@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollyExamples", "examples\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerilogExamples", "examples\SerilogExamples\SerilogExamples.csproj", "{D653EAA4-3936-471D-B9E1-5CF34031BB47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandlingExamples", "examples\ExceptionHandlingExamples\ExceptionHandlingExamples.csproj", "{61B98613-0403-43A1-A19B-F739BDD6166E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{D653EAA4-3936-471D-B9E1-5CF34031BB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D653EAA4-3936-471D-B9E1-5CF34031BB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D653EAA4-3936-471D-B9E1-5CF34031BB47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61B98613-0403-43A1-A19B-F739BDD6166E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B98613-0403-43A1-A19B-F739BDD6166E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B98613-0403-43A1-A19B-F739BDD6166E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B98613-0403-43A1-A19B-F739BDD6166E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{07BBC620-22D0-467B-9139-26DBA37C8EEA} = {10FE064E-6730-43AC-BCD2-D206A9DC4A6A}
@@ -76,5 +82,6 @@ Global
 		{85186242-5838-4A8A-91CA-E1237407CDFE} = {CB14243C-54DB-4A49-A6EE-4840E68D36AA}
 		{A3CB21B2-D8DC-4FA8-AF5A-685F6A6A08A8} = {794D0216-024E-4B40-BA06-0C4A86581A9C}
 		{D653EAA4-3936-471D-B9E1-5CF34031BB47} = {794D0216-024E-4B40-BA06-0C4A86581A9C}
+		{61B98613-0403-43A1-A19B-F739BDD6166E} = {794D0216-024E-4B40-BA06-0C4A86581A9C}
 	EndGlobalSection
 EndGlobal
