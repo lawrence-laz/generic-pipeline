@@ -1,11 +1,19 @@
 namespace GenericPipeline;
 
-/// TODO
+/// <summary>
+/// Represents a pipeline of behaviors that can be used to process requests of different types.
+/// </summary>
 public sealed class Pipeline
 {
     private PipelineBehavior? _firstBehavior;
 
-    /// TODO
+    /// <summary>
+    /// Appends a behavior to the end of the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to append.</typeparam>
+    /// <param name="instance">The instance of the behavior to append.</param>
+    /// <returns>The pipeline instance, to enable method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="instance"/> is null.</exception>
     public Pipeline AppendBehavior<TBehavior>(TBehavior instance) where TBehavior : PipelineBehavior
     {
         if (instance is null)
@@ -25,8 +33,15 @@ public sealed class Pipeline
         return this;
     }
 
-    /// TODO
-    public Pipeline PrependBehavior<TBehavior>(TBehavior instance) where TBehavior : PipelineBehavior
+    /// <summary>
+    /// Prepends a behavior to the beginning of the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to prepend.</typeparam>
+    /// <param name="instance">The instance of the behavior to prepend.</param>
+    /// <returns>The pipeline instance, to enable method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="instance"/> is null.</exception>
+    public Pipeline PrependBehavior<TBehavior>(TBehavior instance)
+        where TBehavior : PipelineBehavior
     {
         if (instance is null)
         {
@@ -46,7 +61,14 @@ public sealed class Pipeline
         return this;
     }
 
-    /// TODO
+    /// <summary>
+    /// Sends a request through the pipeline and returns the response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="request">The request to send.</param>
+    /// <returns>The response of the request.</returns>
+    /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public TResponse Send<TRequest, TResponse>(TRequest request)
         where TRequest : IRequest<TResponse>
     {
@@ -58,7 +80,13 @@ public sealed class Pipeline
         return _firstBehavior.Handle<TRequest, TResponse>(request);
     }
 
-    /// TODO
+    /// <summary>
+    /// Sends a request through the pipeline.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <param name="request">The request to send.</param>
+    /// <returns>A unit value representing the completion of the request.</returns>
+    /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public Unit Send<TRequest>(TRequest request)
         where TRequest : IRequest<Unit>
     {
@@ -70,13 +98,21 @@ public sealed class Pipeline
         return _firstBehavior.Handle<TRequest, Unit>(request);
     }
 
-    /// TODO
-    public TBehavior GetBehavior<TBehavior>() where TBehavior : PipelineBehavior
+    /// <summary>
+    /// Gets the first behavior of the specified type in the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to get.</typeparam>
+    /// <returns>The instance of the behavior.</returns>
+    public TBehavior GetBehavior<TBehavior>()
+        where TBehavior : PipelineBehavior
     {
         return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
     }
 
-    /// TODO iterators allocate memory, could be implemented as a simple loop with static lambda
+    /// <summary>
+    /// Gets an enumerable collection of all behaviors in the pipeline, in the order they are executed.
+    /// </summary>
+    /// <returns>An enumerable collection of behaviors in the pipeline.</returns>
     public IEnumerable<PipelineBehavior> GetBehaviors()
     {
         if (_firstBehavior is null)
