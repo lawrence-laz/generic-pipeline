@@ -15,7 +15,7 @@ public class InvalidHandlerTests
     {
         // Arrange
         var pipeline = new Pipeline()
-            .AppendHandler<RequestBHandler>(new()
+            .AppendHandler<RequestBHandler>(new HandlerOptions
             {
                 ThrowUhandledRequestType = true
             });

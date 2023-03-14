@@ -23,6 +23,11 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
     }
 
     /// <summary>
+    /// Gets options value used for this behavior to invoke handlers.
+    /// </summary>
+    public HandlerOptions Options => _options;
+
+    /// <summary>
     /// Invokes the associated request handler to handle a given request.
     /// If the handler cannot handle the request and <see cref="HandlerOptions.ThrowUhandledRequestType"/> is true,
     /// an exception is thrown. Otherwise, the next behavior in the pipeline is invoked.
@@ -37,7 +42,7 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
         {
             return handler.Handle(request);
         }
-        else if (_options.ThrowUhandledRequestType)
+        else if (Options.ThrowUhandledRequestType)
         {
             // TODO proper exception?
             throw new InvalidOperationException(

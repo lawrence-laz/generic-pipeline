@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using AutoFixture.Xunit2;
 using FluentAssertions;
 using FluentValidation;
 using GenericPipeline;
