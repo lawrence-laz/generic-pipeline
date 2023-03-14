@@ -1,25 +1,44 @@
 namespace GenericPipeline.Behaviors;
 
-/// TODO
+/// <summary>
+/// A pipeline behavior that dispatches a request to the associated request handler.
+/// </summary>
+/// <typeparam name="THandler">The type of the request handler to dispatch requests to.</typeparam>
 public class SimpleDispatcher<THandler> : PipelineBehavior
     where THandler : IRequestHandler
 {
     private readonly THandler _handler;
     private readonly HandlerOptions _options;
 
-    /// TODO
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SimpleDispatcher{THandler}"/> class with the specified request handler and options.
+    /// </summary>
+    /// <param name="handler">The request handler to dispatch requests to.</param>
+    /// <param name="options">The options for handling requests.</param>
+    /// <exception cref="ArgumentException">Thrown when the provided handler is not a valid request handler.</exception>
     public SimpleDispatcher(THandler handler, HandlerOptions options)
     {
         if (handler is not IRequestHandler)
         {
-            throw new ArgumentException("TODO", nameof(handler));
+            throw new ArgumentException(
+                $"The provided handler {typeof(THandler).FullName} is not a valid request handler. " +
+                $"Please ensure it implements the {nameof(IRequestHandler)} interface.",
+                nameof(handler));
         }
 
         _handler = handler;
         _options = options;
     }
 
-    /// TODO
+    /// <summary>
+    /// Invokes the associated request handler to handle a given request.
+    /// If the handler cannot handle the request and <see cref="HandlerOptions.ThrowUhandledRequestType"/> is true,
+    /// an exception is thrown. Otherwise, the next behavior in the pipeline is invoked.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of request to handle.</typeparam>
+    /// <typeparam name="TResponse">The type of response to return.</typeparam>
+    /// <param name="request">The request to handle.</param>
+    /// <returns>The response of the handled request.</returns>
     public override TResponse Handle<TRequest, TResponse>(TRequest request)
     {
         if (_handler is IRequestHandler<TRequest, TResponse> handler)
@@ -42,17 +61,21 @@ public class SimpleDispatcher<THandler> : PipelineBehavior
 
 
 /// <summary>
-/// Options for the <see cref="SimpleDispatcher{THandler}"/> class.
+/// Provides options for a pipeline behavior that invokes a request handler to handle a request.
 /// </summary>
 public sealed class HandlerOptions
 {
-    /// TODO
+    /// <summary>
+    /// The default instance of the <see cref="HandlerOptions"/> class.
+    /// </summary>
     public static readonly HandlerOptions Default = new()
     {
         ThrowUhandledRequestType = false
     };
 
-    /// TODO
+    /// <summary>
+    /// Gets or sets a value indicating whether an exception should be thrown when a handler cannot handle a request type.
+    /// </summary>
     public bool ThrowUhandledRequestType;
 }
 
