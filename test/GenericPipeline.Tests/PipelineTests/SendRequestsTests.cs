@@ -26,7 +26,7 @@ public class SendRequestsTests
 
         // Assert
         actWithoutReturn.Should().Throw<InvalidOperationException>();
-        actWithoutReturn.Should().Throw<InvalidOperationException>();
+        actWithReturn.Should().Throw<InvalidOperationException>();
     }
 }
 
