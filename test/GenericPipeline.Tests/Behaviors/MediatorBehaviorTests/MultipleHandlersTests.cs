@@ -58,7 +58,7 @@ public class MultipleHandlersTests
     public void Send_RequestA_calls_RequestHandlerA_only()
     {
         // Act
-        var actual = _pipeline.Send<RequestA, Unit>(new());
+        var actual = _pipeline.Send<RequestA>(new());
 
         // Assert
         actual.Should().Be(Unit.Value);
