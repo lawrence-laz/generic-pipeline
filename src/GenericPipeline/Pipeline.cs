@@ -74,7 +74,7 @@ public sealed class Pipeline
     {
         if (_firstBehavior is null)
         {
-            throw new System.Exception("TODO");
+            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
 
         return _firstBehavior.Handle<TRequest, TResponse>(request);
