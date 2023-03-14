@@ -1,14 +1,20 @@
 namespace GenericPipeline.Behaviors;
 
 /// TODO
-public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
+public class SimpleDispatcher<THandler> : PipelineBehavior
+    where THandler : IRequestHandler
 {
-    private readonly TRequestHandler _handler;
+    private readonly THandler _handler;
     private readonly HandlerOptions _options;
 
     /// TODO
-    public SimpleDispatcher(TRequestHandler handler, HandlerOptions options)
+    public SimpleDispatcher(THandler handler, HandlerOptions options)
     {
+        if (handler is not IRequestHandler)
+        {
+            throw new ArgumentException("TODO", nameof(handler));
+        }
+
         _handler = handler;
         _options = options;
     }
@@ -24,7 +30,7 @@ public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
         {
             // TODO proper exception?
             throw new InvalidOperationException(
-                $"Handler '{typeof(TRequestHandler).FullName}' does not accept " +
+                $"Handler '{typeof(THandler).FullName}' does not accept " +
                 $"requests of type '{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");
         }
         else
@@ -36,7 +42,7 @@ public class SimpleDispatcher<TRequestHandler> : PipelineBehavior
 
 
 /// <summary>
-/// Options for the <see cref="SimpleDispatcher{TRequestHandler}"/> class.
+/// Options for the <see cref="SimpleDispatcher{THandler}"/> class.
 /// </summary>
 public sealed class HandlerOptions
 {
