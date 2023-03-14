@@ -27,7 +27,7 @@ public sealed class Pipeline
         }
         else
         {
-            GetLastBehavior().Next = instance;
+            GetLastBehavior(_firstBehavior).Next = instance;
         }
 
         return this;
@@ -92,7 +92,7 @@ public sealed class Pipeline
     {
         if (_firstBehavior is null)
         {
-            throw new System.Exception("TODO");
+            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
 
         return _firstBehavior.Handle<TRequest, Unit>(request);
@@ -129,14 +129,9 @@ public sealed class Pipeline
         } while (behavior is not null);
     }
 
-    private PipelineBehavior GetLastBehavior()
+    private PipelineBehavior GetLastBehavior(PipelineBehavior behavior)
     {
-        if (_firstBehavior is null)
-        {
-            throw new Exception("TODO");
-        }
-
-        var last = _firstBehavior;
+        var last = behavior;
         while (last.Next is not null)
         {
             last = last.Next;
