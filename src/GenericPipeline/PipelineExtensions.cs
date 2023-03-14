@@ -31,7 +31,7 @@ public static class PipelineExtensions
         }
 
         var handler = Activator.CreateInstance(handlerType);
-        var behaviorType = typeof(SimpleDispatcher<>).MakeGenericType(handlerType);
+        var behaviorType = typeof(SingleHandlerBehavior<>).MakeGenericType(handlerType);
         var behavior = (PipelineBehavior)Activator.CreateInstance(
             behaviorType,
             handler,
@@ -65,7 +65,7 @@ public static class PipelineExtensions
         HandlerOptions options)
         where THandler : IRequestHandler
     {
-        return pipeline.AppendBehavior(new SimpleDispatcher<THandler>(handler, options));
+        return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler, options));
     }
 }
 

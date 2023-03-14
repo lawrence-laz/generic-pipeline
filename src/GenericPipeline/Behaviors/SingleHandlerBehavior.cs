@@ -4,28 +4,20 @@ namespace GenericPipeline.Behaviors;
 /// A pipeline behavior that dispatches a request to the associated request handler.
 /// </summary>
 /// <typeparam name="THandler">The type of the request handler to dispatch requests to.</typeparam>
-public class SimpleDispatcher<THandler> : PipelineBehavior
+public class SingleHandlerBehavior<THandler> : PipelineBehavior
     where THandler : IRequestHandler
 {
     private readonly THandler _handler;
     private readonly HandlerOptions _options;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SimpleDispatcher{THandler}"/> class with the specified request handler and options.
+    /// Initializes a new instance of the <see cref="SingleHandlerBehavior{THandler}"/> class with the specified request handler and options.
     /// </summary>
     /// <param name="handler">The request handler to dispatch requests to.</param>
     /// <param name="options">The options for handling requests.</param>
     /// <exception cref="ArgumentException">Thrown when the provided handler is not a valid request handler.</exception>
-    public SimpleDispatcher(THandler handler, HandlerOptions options)
+    public SingleHandlerBehavior(THandler handler, HandlerOptions options)
     {
-        if (handler is not IRequestHandler)
-        {
-            throw new ArgumentException(
-                $"The provided handler {typeof(THandler).FullName} is not a valid request handler. " +
-                $"Please ensure it implements the {nameof(IRequestHandler)} interface.",
-                nameof(handler));
-        }
-
         _handler = handler;
         _options = options;
     }
