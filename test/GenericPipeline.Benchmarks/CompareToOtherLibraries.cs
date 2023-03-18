@@ -42,7 +42,7 @@ public class CompareToOtherLibraries
         MethodCallScenario.StaticMethods.DoWorkRequest();
     }
 
-    [Benchmark()]
+    [Benchmark]
     public async Task MethodCallAsync()
     {
         await MethodCallScenario.StaticMethods.DoWorkBehaviorAsync();
@@ -61,6 +61,13 @@ public class CompareToOtherLibraries
     public void GenericPipeline()
     {
         _pipeline.Send<GenericPipelineScenario.DoWorkRequest, GenericPipeline.Unit>(new());
+    }
+
+    [Benchmark]
+    public void GenericPipelineObject()
+    {
+        object request = new GenericPipelineScenario.DoWorkRequest();
+        _pipeline.Send(request);
     }
 
 

@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using BenchmarkDotNet.Running;
 
-BenchmarkRunner.Run<CompareHandlerCounts>();
-// BenchmarkRunner.Run<CommpareToOtherLibraries>();
+// BenchmarkRunner.Run<CompareHandlerCounts>();
+BenchmarkRunner.Run<CompareToOtherLibraries>();
 
 public static class BaseBehaviorExtensions
 {

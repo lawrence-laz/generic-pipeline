@@ -111,5 +111,34 @@ public static class PipelineExtensions
     {
         return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler, options));
     }
+
+    /// <summary>
+    /// Sends a request through the pipeline and returns the response.
+    /// This method is significantly slower than the generic variant, because
+    /// reflection is inevitable here. Use it only when the generic method does 
+    /// not suffice.
+    /// </summary>
+    /// <param name="pipeline">The pipeline instance to use.</param>
+    /// <param name="request">The request to send.</param>
+    /// <returns>The response of the request.</returns>
+    public static object Send(
+        this Pipeline pipeline,
+        object request)
+    {
+        var requestType = request.GetType();
+        var responseType = requestType
+            .GetInterfaces()
+            .First(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
+            .GetGenericArguments()
+            .First();
+        var methods = typeof(Pipeline).GetMethods();
+        var sendMethod = typeof(Pipeline)
+            .GetMethods()
+            .First(method => method.Name == nameof(Pipeline.Send) && method.GetGenericArguments().Length == 2)
+            .MakeGenericMethod(requestType, responseType);
+        var response = sendMethod.Invoke(pipeline, new[] { request });
+
+        return response;
+    }
 }
 
