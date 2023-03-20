@@ -33,7 +33,7 @@ public class UnhandledTests
         var act = () => pipeline.Send<RequestWithoutHandler, Unit>(new());
 
         // Assert
-        act.Should().Throw<InvalidOperationException>();
+        act.Should().Throw<UnhandledRequestException>();
         behaviorAfterMediator.WasCalled.Should().BeFalse();
     }
 

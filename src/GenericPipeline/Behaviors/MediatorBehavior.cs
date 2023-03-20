@@ -1,18 +1,29 @@
+using System.Collections.Concurrent;
+
 namespace GenericPipeline.Behaviors;
 
-/// TODO
+/// <summary>
+/// A pipeline behavior that handles requests by dispatching them to the appropriate request handler.
+/// </summary>
 public class MediatorBehavior : PipelineBehavior
 {
     private readonly HandlerOptions _handlerOptions;
-    private Dictionary<Type, object> _requestHandlers = new();
+    private ConcurrentDictionary<Type, object> _requestHandlers = new();
 
-    /// TODO
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MediatorBehavior"/> class with the specified handler options.
+    /// </summary>
+    /// <param name="handlerOptions">The handler options to use when handling requests.</param>
     public MediatorBehavior(HandlerOptions handlerOptions)
     {
         _handlerOptions = handlerOptions;
     }
 
-    /// TODO
+    /// <summary>
+    /// Adds the specified handler to the list of request handlers that can handle requests.
+    /// </summary>
+    /// <param name="handler">The request handler to add.</param>
+    /// <returns>The updated mediator behavior instance.</returns>
     public MediatorBehavior AddHandler(object handler)
     {
         var requestHandlerInterfaces = handler
@@ -21,7 +32,13 @@ public class MediatorBehavior : PipelineBehavior
             .Where(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
         foreach (var handlerType in requestHandlerInterfaces)
         {
-            _requestHandlers.Add(handlerType.GetGenericArguments()[0], handler);
+            var requestType = handlerType.GetGenericArguments()[0];
+            if (!_requestHandlers.TryAdd(requestType, handler))
+            {
+                throw new DuplicateHandlerException(
+                    $"The request handler for type '{requestType.FullName}' " +
+                    "has already been added to the mediator behavior instance.");
+            }
         }
 
         return this;
@@ -42,7 +59,13 @@ public class MediatorBehavior : PipelineBehavior
     //     return this;
     // }
 
-    /// TODO
+    /// <summary>
+    /// Handles the specified request by dispatching it to the appropriate request handler.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request to handle.</typeparam>
+    /// <typeparam name="TResponse">The type of the response to return.</typeparam>
+    /// <param name="request">The request to handle.</param>
+    /// <returns>The response of the handled request.</returns>
     public override TResponse Handle<TRequest, TResponse>(TRequest request)
     {
         if (_requestHandlers.TryGetValue(request.GetType(), out var handler)
@@ -53,7 +76,7 @@ public class MediatorBehavior : PipelineBehavior
         else if (_handlerOptions.ThrowUhandledRequestType)
         {
             // TODO proper exception?
-            throw new InvalidOperationException(
+            throw new UnhandledRequestException(
                 $"Mediator does not accept requests of type " +
                 $"'{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");
         }
