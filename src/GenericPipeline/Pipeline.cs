@@ -21,6 +21,7 @@ public sealed class Pipeline
             throw new ArgumentNullException(nameof(instance));
         }
 
+
         if (_firstBehavior is null)
         {
             _firstBehavior = instance;
@@ -47,6 +48,7 @@ public sealed class Pipeline
         {
             throw new ArgumentNullException(nameof(instance));
         }
+
 
         if (_firstBehavior is null)
         {
@@ -90,12 +92,7 @@ public sealed class Pipeline
     public Unit Send<TRequest>(TRequest request)
         where TRequest : IRequest<Unit>
     {
-        if (_firstBehavior is null)
-        {
-            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
-        }
-
-        return _firstBehavior.Handle<TRequest, Unit>(request);
+        return Send<TRequest, Unit>(request);
     }
 
     /// <summary>
