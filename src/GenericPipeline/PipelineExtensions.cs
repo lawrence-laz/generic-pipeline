@@ -13,10 +13,10 @@ public static class PipelineExtensions
     /// <typeparam name="TBehavior">The type of the behavior to add.</typeparam>
     /// <param name="pipeline">The pipeline to add the behavior to.</param>
     /// <returns>The modified pipeline instance.</returns>
-    public static Pipeline AppendBehavior<TBehavior>(this Pipeline pipeline) where TBehavior : PipelineBehavior
+    public static Pipeline AppendBehavior<TBehavior>(this Pipeline pipeline)
+        where TBehavior : PipelineBehavior, new()
     {
-        var behavior = Activator.CreateInstance<TBehavior>();
-        return pipeline.AppendBehavior(behavior);
+        return pipeline.AppendBehavior(new TBehavior());
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ public static class PipelineExtensions
     /// <param name="pipeline">The pipeline to add the handler to.</param>
     /// <returns>The modified pipeline instance.</returns>
     public static Pipeline AppendHandler<THandler>(this Pipeline pipeline)
-        where THandler : IRequestHandler
+        where THandler : IRequestHandler, new()
     {
         return pipeline.AppendHandler<THandler>(HandlerOptions.Default);
     }
@@ -72,10 +72,9 @@ public static class PipelineExtensions
     public static Pipeline AppendHandler<THandler>(
         this Pipeline pipeline,
         HandlerOptions options)
-        where THandler : IRequestHandler
+        where THandler : IRequestHandler, new()
     {
-        var handler = Activator.CreateInstance<THandler>();
-        return pipeline.AppendHandler(handler, options);
+        return pipeline.AppendHandler(new THandler(), options);
     }
 
     // TODO: does this cause ambiguity for compiler if handler implements two handler interfaces?
