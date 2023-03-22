@@ -32,7 +32,7 @@ public class HelloWorldCounterTestsAsync
             .AppendHandler<HelloHandlerAsync>();
 
         // Act
-        var actual = await sut.Send<HelloRequestAsync, string>(new(name));
+        var actual = await sut.SendAsync<HelloRequestAsync, string>(new(name));
 
         // Assert
         actual.Should().Be($"Hello, {name}");
@@ -54,7 +54,7 @@ public class HelloWorldCounterTestsAsync
         // Act
         for (var i = 0; i < expectedCount; ++i)
         {
-            actuals.Add(await sut.Send<HelloRequestAsync, string>(new(name)));
+            actuals.Add(await sut.SendAsync<HelloRequestAsync, string>(new(name)));
         }
 
         // Assert

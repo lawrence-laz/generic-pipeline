@@ -8,7 +8,7 @@ namespace GenericPipeline.Behaviors;
 public class MediatorBehavior : PipelineBehavior
 {
     private readonly HandlerOptions _handlerOptions;
-    private ConcurrentDictionary<Type, object> _requestHandlers = new();
+    internal ConcurrentDictionary<Type, object> _requestHandlers = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MediatorBehavior"/> class with the specified handler options.

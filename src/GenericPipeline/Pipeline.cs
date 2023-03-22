@@ -14,7 +14,8 @@ public sealed class Pipeline
     /// <param name="instance">The instance of the behavior to append.</param>
     /// <returns>The pipeline instance, to enable method chaining.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="instance"/> is null.</exception>
-    public Pipeline AppendBehavior<TBehavior>(TBehavior instance) where TBehavior : PipelineBehavior
+    public Pipeline AppendBehavior<TBehavior>(TBehavior instance)
+        where TBehavior : PipelineBehavior
     {
         if (instance is null)
         {
@@ -104,6 +105,32 @@ public sealed class Pipeline
         where TBehavior : PipelineBehavior
     {
         return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
+    }
+
+    /// TODO
+    public THandler GetHandler<THandler>()
+        where THandler : IRequestHandler
+    {
+        // TODO: GetHandlers method?
+        var singleHandlerBehavior = GetBehaviors()
+            .OfType<SingleHandlerBehavior<THandler>>()
+            .FirstOrDefault();
+        if (singleHandlerBehavior is not null)
+        {
+            return singleHandlerBehavior._handler;
+        }
+
+        var requestHandlerFromMediator = GetBehaviors()
+            .OfType<MediatorBehavior>()
+            .SelectMany(mediator => mediator._requestHandlers)
+            .OfType<THandler>()
+            .FirstOrDefault();
+        if (requestHandlerFromMediator is not null)
+        {
+            return requestHandlerFromMediator;
+        }
+
+        throw new HandlerNotFoundException();
     }
 
     /// <summary>

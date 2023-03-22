@@ -1,13 +1,8 @@
 namespace GenericPipeline;
 
 /// TODO
-public interface IRequestHandlerAsync
-{
-}
-
-/// TODO
 public interface IRequestHandlerAsync<TRequest, TResponse>
-    : IRequestHandlerAsync
+    : IRequestHandler
     where TRequest : IRequest<TResponse>
 {
     /// TODO

@@ -7,7 +7,7 @@ namespace GenericPipeline.Behaviors;
 public class SingleHandlerBehavior<THandler> : PipelineBehavior
     where THandler : IRequestHandler
 {
-    private readonly THandler _handler;
+    internal readonly THandler _handler;
     private readonly HandlerOptions _options;
 
     /// <summary>

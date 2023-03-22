@@ -63,7 +63,7 @@ public sealed class UnhandledRequestException : GenericPipelineException
 /// Represents an exception that is thrown when a duplicate handler is found in the pipeline.
 /// </summary>
 [System.Serializable]
-public sealed class DuplicateHandlerException : System.Exception
+public sealed class DuplicateHandlerException : GenericPipelineException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DuplicateHandlerException"/> class with default values.
@@ -82,5 +82,19 @@ public sealed class DuplicateHandlerException : System.Exception
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
     public DuplicateHandlerException(string message, System.Exception inner) : base(message, inner) { }
+}
+
+/// TODO
+[System.Serializable]
+public sealed class HandlerNotFoundException : GenericPipelineException
+{
+    /// TODO
+    public HandlerNotFoundException() { } // TODO: add message
+
+    /// TODO
+    public HandlerNotFoundException(string message) : base(message) { }
+
+    /// TODO
+    public HandlerNotFoundException(string message, System.Exception inner) : base(message, inner) { }
 }
 
