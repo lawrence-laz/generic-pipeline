@@ -50,7 +50,7 @@ public sealed class PipelineAsync
 
     /// TODO
     public async Task<TResponse> Send<TRequest, TResponse>(TRequest request)
-        where TRequest : IRequest<Task<TResponse>>
+        where TRequest : IRequest<TResponse>
     {
         if (_firstBehavior is null)
         {

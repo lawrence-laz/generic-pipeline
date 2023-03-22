@@ -3,10 +3,12 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>GenericPipeline.Extensions.DependencyInjection</RootNamespace>
+
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
         <Company>Laurynas Lazauskas</Company>
         <Authors>Laurynas Lazauskas</Authors>
         <Product>GenericPipeline.Extensions.DependencyInjection</Product>

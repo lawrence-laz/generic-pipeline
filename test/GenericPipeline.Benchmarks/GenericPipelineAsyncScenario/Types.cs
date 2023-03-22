@@ -1,6 +1,6 @@
 namespace GenericPipeline.Benchmarks.GenericPipelineAsyncScenario;
 
-public record struct DoWorkRequest() : IRequest<Task<Unit>>;
+public record struct DoWorkRequest() : IRequest<Unit>;
 
 public class DoWorkHandler : IRequestHandlerAsync<DoWorkRequest>
 {

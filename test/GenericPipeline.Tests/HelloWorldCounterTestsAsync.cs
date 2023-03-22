@@ -1,4 +1,4 @@
-public record struct HelloRequestAsync(string Name) : IRequest<Task<string>>;
+public record struct HelloRequestAsync(string Name) : IRequest<string>;
 
 public class HelloHandlerAsync : IRequestHandlerAsync<HelloRequestAsync, string>
 {

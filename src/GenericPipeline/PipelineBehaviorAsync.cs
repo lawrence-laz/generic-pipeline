@@ -7,11 +7,11 @@ public abstract class PipelineBehaviorAsync
 
     /// TODO
     public abstract Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
-        where TRequest : IRequest<Task<TResponse>>;
+        where TRequest : IRequest<TResponse>;
 
     /// TODO
     protected Task<TResponse> HandleNext<TRequest, TResponse>(TRequest request)
-        where TRequest : IRequest<Task<TResponse>>
+        where TRequest : IRequest<TResponse>
     {
         if (Next is not null)
         {
