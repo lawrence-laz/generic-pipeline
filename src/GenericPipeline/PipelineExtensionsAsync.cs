@@ -5,10 +5,9 @@ public static class PipelineAsyncExtensions
 {
     /// TODO
     public static PipelineAsync AppendBehavior<TBehavior>(this PipelineAsync pipeline)
-        where TBehavior : PipelineBehaviorAsync
+        where TBehavior : PipelineBehaviorAsync, new()
     {
-        var behavior = Activator.CreateInstance<TBehavior>();
-        return pipeline.AppendBehavior(behavior);
+        return pipeline.AppendBehavior(new TBehavior());
     }
 
     /// TODO

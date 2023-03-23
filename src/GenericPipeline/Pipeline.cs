@@ -107,8 +107,8 @@ public sealed class Pipeline
         return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
     }
 
-    /// TODO
-    public THandler GetHandler<THandler>()
+    /// TOOD
+    public bool TryGetHandler<THandler>([NotNullWhen(true)] out THandler? handler)
         where THandler : IRequestHandler
     {
         // TODO: GetHandlers method?
@@ -117,7 +117,8 @@ public sealed class Pipeline
             .FirstOrDefault();
         if (singleHandlerBehavior is not null)
         {
-            return singleHandlerBehavior._handler;
+            handler = singleHandlerBehavior._handler;
+            return true;
         }
 
         var requestHandlerFromMediator = GetBehaviors()
@@ -127,10 +128,23 @@ public sealed class Pipeline
             .FirstOrDefault();
         if (requestHandlerFromMediator is not null)
         {
-            return requestHandlerFromMediator;
+            handler = requestHandlerFromMediator;
+            return true;
         }
 
-        throw new HandlerNotFoundException();
+        handler = default;
+        return false;
+    }
+
+    /// TODO
+    public THandler GetHandler<THandler>()
+        where THandler : IRequestHandler
+    {
+        if (!TryGetHandler<THandler>(out var handler))
+        {
+            throw new HandlerNotFoundException();
+        }
+        return handler;
     }
 
     /// <summary>

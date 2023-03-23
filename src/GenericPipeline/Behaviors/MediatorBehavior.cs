@@ -9,6 +9,14 @@ public class MediatorBehavior : PipelineBehavior
 {
     internal ConcurrentDictionary<Type, object> _requestHandlers = new();
 
+    /// TODO
+    public MediatorBehavior AddHandler<THandler>()
+        where THandler : IRequestHandler, new()
+    {
+        AddHandler(new THandler());
+        return this;
+    }
+
     /// <summary>
     /// Adds the specified handler to the list of request handlers that can handle requests.
     /// </summary>
