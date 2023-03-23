@@ -22,6 +22,7 @@ public class GenericPipelineException : System.Exception
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
+    [ExcludeFromCodeCoverage]
     public GenericPipelineException(string message, System.Exception inner) : base(message, inner) { }
 
     /// <summary>
@@ -29,6 +30,7 @@ public class GenericPipelineException : System.Exception
     /// </summary>
     /// <param name="info">The object that holds the serialized object data.</param>
     /// <param name="context">The contextual information about the source or destination.</param>
+    [ExcludeFromCodeCoverage]
     protected GenericPipelineException(
         System.Runtime.Serialization.SerializationInfo info,
         System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
@@ -43,6 +45,7 @@ public sealed class UnhandledRequestException : GenericPipelineException
     /// <summary>
     /// Initializes a new instance of the <see cref="UnhandledRequestException"/> class with default values.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public UnhandledRequestException() { }
 
     /// <summary>
@@ -56,6 +59,7 @@ public sealed class UnhandledRequestException : GenericPipelineException
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
+    [ExcludeFromCodeCoverage]
     public UnhandledRequestException(string message, System.Exception inner) : base(message, inner) { }
 }
 
@@ -68,6 +72,7 @@ public sealed class DuplicateHandlerException : GenericPipelineException
     /// <summary>
     /// Initializes a new instance of the <see cref="DuplicateHandlerException"/> class with default values.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public DuplicateHandlerException() { }
 
     /// <summary>
@@ -81,6 +86,7 @@ public sealed class DuplicateHandlerException : GenericPipelineException
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
+    [ExcludeFromCodeCoverage]
     public DuplicateHandlerException(string message, System.Exception inner) : base(message, inner) { }
 }
 
@@ -92,9 +98,11 @@ public sealed class HandlerNotFoundException : GenericPipelineException
     public HandlerNotFoundException() { } // TODO: add message
 
     /// TODO
+    [ExcludeFromCodeCoverage]
     public HandlerNotFoundException(string message) : base(message) { }
 
     /// TODO
+    [ExcludeFromCodeCoverage]
     public HandlerNotFoundException(string message, System.Exception inner) : base(message, inner) { }
 }
 
