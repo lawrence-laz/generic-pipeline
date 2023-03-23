@@ -38,6 +38,29 @@ public class GettingHandlerTests
         actualC.Should().BeOfType<RequestHandlerC>();
     }
 
+
+    [Fact]
+    public void Getting_existing_handler_from_mediator()
+    {
+        // Arrange
+        var mediator = new MediatorBehavior()
+            .AddHandler<RequestHandlerA>()
+            .AddHandler<RequestHandlerB>()
+            .AddHandler<RequestHandlerC>();
+        var pipeline = new Pipeline()
+            .AppendBehavior(mediator);
+
+        // Act
+        var actualA = pipeline.GetHandler<RequestHandlerA>();
+        var actualB = pipeline.GetHandler<RequestHandlerB>();
+        var actualC = pipeline.GetHandler<RequestHandlerC>();
+
+        // Assert
+        actualA.Should().BeOfType<RequestHandlerA>();
+        actualB.Should().BeOfType<RequestHandlerB>();
+        actualC.Should().BeOfType<RequestHandlerC>();
+    }
+
     [Fact]
     public void Getting_non_existing_handler_from_pipeline_throws()
     {

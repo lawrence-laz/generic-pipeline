@@ -120,11 +120,10 @@ public sealed class Pipeline
             handler = singleHandlerBehavior._handler;
             return true;
         }
-
         var requestHandlerFromMediator = GetBehaviors()
             .OfType<MediatorBehavior>()
-            .SelectMany(mediator => mediator._requestHandlers)
-            .OfType<THandler>()
+            .SelectMany(mediator => mediator._requestHandlers.Values)
+            .ToList().OfType<THandler>()
             .FirstOrDefault();
         if (requestHandlerFromMediator is not null)
         {
