@@ -31,5 +31,28 @@ public static class PipelineAsyncExtensions
     {
         return pipeline.AppendBehavior<UnhandledThrowingBehaviorAsync>();
     }
+
+    /// TODO
+    public static PipelineAsync AppendHandler(this PipelineAsync pipeline, Type handlerType)
+    {
+        if (handlerType is null)
+        {
+            throw new ArgumentNullException(nameof(handlerType));
+        }
+
+        if (!typeof(IRequestHandler).IsAssignableFrom(handlerType))
+        {
+            throw new ArgumentException(
+                $"Type must be a subclass of {nameof(IRequestHandler)}",
+                nameof(handlerType));
+        }
+
+        var handler = Activator.CreateInstance(handlerType);
+        var behaviorType = typeof(SingleHandlerBehaviorAsync<>).MakeGenericType(handlerType);
+        var behavior = (PipelineBehaviorAsync)Activator.CreateInstance(
+            behaviorType,
+            handler);
+        return pipeline.AppendBehavior(behavior);
+    }
 }
 

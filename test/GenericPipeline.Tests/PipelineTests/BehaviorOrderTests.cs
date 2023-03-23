@@ -1,3 +1,5 @@
+namespace GenericPipeline.Tests.PipelineTests;
+
 using System.Text;
 
 public record struct OrderTestRequest(string Text) : IRequest<string>;

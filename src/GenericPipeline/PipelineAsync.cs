@@ -20,7 +20,7 @@ public sealed class PipelineAsync
         }
         else
         {
-            GetLastBehavior().Next = instance;
+            GetLastBehavior(_firstBehavior).Next = instance;
         }
 
         return this;
@@ -116,14 +116,9 @@ public sealed class PipelineAsync
         } while (behavior is not null);
     }
 
-    private PipelineBehaviorAsync GetLastBehavior()
+    private PipelineBehaviorAsync GetLastBehavior(PipelineBehaviorAsync behavior)
     {
-        if (_firstBehavior is null)
-        {
-            throw new Exception("TODO");
-        }
-
-        var last = _firstBehavior;
+        var last = behavior;
         while (last.Next is not null)
         {
             last = last.Next;
