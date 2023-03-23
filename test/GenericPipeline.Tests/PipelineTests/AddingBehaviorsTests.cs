@@ -42,34 +42,34 @@ public class AddingBehaviorsTestscclass
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Fact]
-    public void Appending_handler_by_type_with_default_options()
-    {
-        // Arrange
-        var pipeline = new Pipeline();
+    // [Fact]
+    // public void Appending_handler_by_type_with_default_options()
+    // {
+    //     // Arrange
+    //     var pipeline = new Pipeline();
+    //
+    //     // Act
+    //     pipeline.AppendHandler(typeof(TestHandler));
+    //
+    //     // Assert
+    //     var behavior = pipeline.GetBehavior<SingleHandlerBehavior<TestHandler>>();
+    //     behavior.Options.Should().Be(HandlerOptions.Default);
+    // }
 
-        // Act
-        pipeline.AppendHandler(typeof(TestHandler));
-
-        // Assert
-        var behavior = pipeline.GetBehavior<SingleHandlerBehavior<TestHandler>>();
-        behavior.Options.Should().Be(HandlerOptions.Default);
-    }
-
-    [Fact]
-    public void Appending_handler_by_instance_with_default_options()
-    {
-        // Arrange
-        var handler = new TestHandler();
-        var pipeline = new Pipeline();
-
-        // Act
-        pipeline.AppendHandler(handler);
-
-        // Assert
-        var behavior = pipeline.GetBehavior<SingleHandlerBehavior<TestHandler>>();
-        behavior.Options.Should().Be(HandlerOptions.Default);
-    }
+    // [Fact]
+    // public void Appending_handler_by_instance_with_default_options()
+    // {
+    //     // Arrange
+    //     var handler = new TestHandler();
+    //     var pipeline = new Pipeline();
+    //
+    //     // Act
+    //     pipeline.AppendHandler(handler);
+    //
+    //     // Assert
+    //     var behavior = pipeline.GetBehavior<SingleHandlerBehavior<TestHandler>>();
+    //     behavior.Options.Should().Be(HandlerOptions.Default);
+    // }
 
     [Fact]
     public void Appending_null_handler_type_throws()

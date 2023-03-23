@@ -48,7 +48,7 @@ public class MultipleHandlersTests
         _handlerB = new RequestHandlerB();
         _handlerC = new RequestHandlerC();
         _pipeline = new Pipeline()
-            .AppendBehavior(new MediatorBehavior(new())
+            .AppendBehavior(new MediatorBehavior()
                 .AddHandler(_handlerA)
                 .AddHandler(_handlerB)
                 .AddHandler(_handlerC));

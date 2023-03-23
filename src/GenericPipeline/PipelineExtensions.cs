@@ -28,7 +28,7 @@ public static class PipelineExtensions
     public static Pipeline AppendHandler<THandler>(this Pipeline pipeline)
         where THandler : IRequestHandler, new()
     {
-        return pipeline.AppendHandler<THandler>(HandlerOptions.Default);
+        return pipeline.AppendHandler(new THandler());
     }
 
     /// <summary>
@@ -57,24 +57,8 @@ public static class PipelineExtensions
         var behaviorType = typeof(SingleHandlerBehavior<>).MakeGenericType(handlerType);
         var behavior = (PipelineBehavior)Activator.CreateInstance(
             behaviorType,
-            handler,
-            HandlerOptions.Default);
+            handler);
         return pipeline.AppendBehavior(behavior);
-    }
-
-    /// <summary>
-    /// Appends a handler of the specified type to the pipeline with the specified options.
-    /// </summary>
-    /// <typeparam name="THandler">The type of the handler to add.</typeparam>
-    /// <param name="pipeline">The pipeline to add the handler to.</param>
-    /// <param name="options">The options to use when adding the handler.</param>
-    /// <returns>The modified pipeline instance.</returns>
-    public static Pipeline AppendHandler<THandler>(
-        this Pipeline pipeline,
-        HandlerOptions options)
-        where THandler : IRequestHandler, new()
-    {
-        return pipeline.AppendHandler(new THandler(), options);
     }
 
     // TODO: does this cause ambiguity for compiler if handler implements two handler interfaces?
@@ -91,24 +75,7 @@ public static class PipelineExtensions
         THandler handler)
         where THandler : IRequestHandler
     {
-        return pipeline.AppendHandler(handler, HandlerOptions.Default);
-    }
-
-    /// <summary>
-    /// Appends a handler of the specified type to the pipeline with the specified options.
-    /// </summary>
-    /// <typeparam name="THandler">The type of the handler to add.</typeparam>
-    /// <param name="pipeline">The pipeline to add the handler to.</param>
-    /// <param name="handler">The handler to add to the pipeline.</param>
-    /// <param name="options">The options to use when adding the handler.</param>
-    /// <returns>The modified pipeline instance.</returns>
-    public static Pipeline AppendHandler<THandler>(
-        this Pipeline pipeline,
-        THandler handler,
-        HandlerOptions options)
-        where THandler : IRequestHandler
-    {
-        return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler, options));
+        return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler));
     }
 
     /// <summary>
@@ -138,6 +105,12 @@ public static class PipelineExtensions
         var response = sendMethod.Invoke(pipeline, new[] { request });
 
         return response;
+    }
+
+    /// TODO
+    public static Pipeline ThrowOnUnhandledRequest(this Pipeline pipeline)
+    {
+        return pipeline.AppendBehavior<UnhandledThrowingBehavior>();
     }
 }
 

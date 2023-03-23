@@ -7,17 +7,7 @@ namespace GenericPipeline.Behaviors;
 /// </summary>
 public class MediatorBehavior : PipelineBehavior
 {
-    private readonly HandlerOptions _handlerOptions;
     internal ConcurrentDictionary<Type, object> _requestHandlers = new();
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MediatorBehavior"/> class with the specified handler options.
-    /// </summary>
-    /// <param name="handlerOptions">The handler options to use when handling requests.</param>
-    public MediatorBehavior(HandlerOptions handlerOptions)
-    {
-        _handlerOptions = handlerOptions;
-    }
 
     /// <summary>
     /// Adds the specified handler to the list of request handlers that can handle requests.
@@ -72,13 +62,6 @@ public class MediatorBehavior : PipelineBehavior
             && handler is IRequestHandler<TRequest, TResponse> requestHandler)
         {
             return requestHandler.Handle(request);
-        }
-        else if (_handlerOptions.ThrowUhandledRequestType)
-        {
-            // TODO proper exception?
-            throw new UnhandledRequestException(
-                $"Mediator does not accept requests of type " +
-                $"'{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");
         }
         else
         {

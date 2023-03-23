@@ -8,29 +8,20 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
     where THandler : IRequestHandler
 {
     internal readonly THandler _handler;
-    private readonly HandlerOptions _options;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SingleHandlerBehavior{THandler}"/> class with the specified request handler and options.
+    /// Initializes a new instance of the <see cref="SingleHandlerBehavior{THandler}"/> class with the specified request handler.
     /// </summary>
     /// <param name="handler">The request handler to dispatch requests to.</param>
-    /// <param name="options">The options for handling requests.</param>
     /// <exception cref="ArgumentException">Thrown when the provided handler is not a valid request handler.</exception>
-    public SingleHandlerBehavior(THandler handler, HandlerOptions options)
+    public SingleHandlerBehavior(THandler handler)
     {
         _handler = handler;
-        _options = options;
     }
 
     /// <summary>
-    /// Gets options value used for this behavior to invoke handlers.
-    /// </summary>
-    public HandlerOptions Options => _options;
-
-    /// <summary>
     /// Invokes the associated request handler to handle a given request.
-    /// If the handler cannot handle the request and <see cref="HandlerOptions.ThrowUhandledRequestType"/> is true,
-    /// an exception is thrown. Otherwise, the next behavior in the pipeline is invoked.
+    /// If the handler cannot handle the request, then the next behavior in the pipeline is invoked.
     /// </summary>
     /// <typeparam name="TRequest">The type of request to handle.</typeparam>
     /// <typeparam name="TResponse">The type of response to return.</typeparam>
@@ -42,37 +33,10 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
         {
             return handler.Handle(request);
         }
-        else if (Options.ThrowUhandledRequestType)
-        {
-            // TODO proper exception?
-            throw new InvalidOperationException(
-                $"Handler '{typeof(THandler).FullName}' does not accept " +
-                $"requests of type '{typeof(TRequest).FullName}' returning '{typeof(TResponse).FullName}'.");
-        }
         else
         {
             return HandleNext<TRequest, TResponse>(request);
         }
     }
-}
-
-
-/// <summary>
-/// Provides options for a pipeline behavior that invokes a request handler to handle a request.
-/// </summary>
-public sealed class HandlerOptions
-{
-    /// <summary>
-    /// The default instance of the <see cref="HandlerOptions"/> class.
-    /// </summary>
-    public static readonly HandlerOptions Default = new()
-    {
-        ThrowUhandledRequestType = false
-    };
-
-    /// <summary>
-    /// Gets or sets a value indicating whether an exception should be thrown when a handler cannot handle a request type.
-    /// </summary>
-    public bool ThrowUhandledRequestType;
 }
 

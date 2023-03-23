@@ -26,5 +26,11 @@ public static class PipelineAsyncExtensions
     {
         return pipeline.AppendBehavior(new SingleHandlerBehaviorAsync<THandler>(handler));
     }
+
+    /// TODO
+    public static PipelineAsync ThrowOnUnhandledRequest(this PipelineAsync pipeline)
+    {
+        return pipeline.AppendBehavior<UnhandledThrowingBehaviorAsync>();
+    }
 }
 

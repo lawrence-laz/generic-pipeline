@@ -216,7 +216,7 @@ public class CompareHandlerCounts
         _1HandlerPipeline = new Pipeline()
             .AppendHandler<Request1Handler>();
 
-        var behavior = new MediatorBehavior(new());
+        var behavior = new MediatorBehavior();
         for (var i = 1; i <= 10; ++i)
         {
             behavior.AddHandler(Activator.CreateInstance(Type.GetType($"Request{i}Handler")));
@@ -224,7 +224,7 @@ public class CompareHandlerCounts
         _10HandlersPipeline = new Pipeline()
             .AppendBehavior<MediatorBehavior>(behavior);
 
-        behavior = new MediatorBehavior(new());
+        behavior = new MediatorBehavior();
         for (var i = 1; i <= 100; ++i)
         {
             behavior.AddHandler(Activator.CreateInstance(Type.GetType($"Request{i}Handler")));
