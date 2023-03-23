@@ -9,5 +9,8 @@ public struct Unit
     /// Gets a singleton instance of the <see cref="Unit"/> struct.
     /// </summary>
     public static readonly Unit Value = new();
+
+    /// TODO
+    public static readonly Task<Unit> ValueTask = Task.FromResult(Value);
 }
 

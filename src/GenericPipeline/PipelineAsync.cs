@@ -54,7 +54,7 @@ public sealed class PipelineAsync
     {
         if (_firstBehavior is null)
         {
-            throw new System.Exception("TODO");
+            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
 
         return await _firstBehavior.Handle<TRequest, TResponse>(request);

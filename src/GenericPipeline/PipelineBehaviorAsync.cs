@@ -19,7 +19,7 @@ public abstract class PipelineBehaviorAsync
         }
         else
         {
-            return default!; // TODO
+            return Task.FromResult<TResponse>(default!);
         }
     }
 }

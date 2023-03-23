@@ -36,7 +36,7 @@ public abstract class PipelineBehavior
         }
         else
         {
-            return default!; // TODO
+            return default!;
         }
     }
 }

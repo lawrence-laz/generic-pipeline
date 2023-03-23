@@ -14,6 +14,16 @@ public class SendRequestsTests
         public int Handle(RequestB request) => 0;
     }
 
+    public class TestBehavior : PipelineBehavior
+    {
+        public int InvocationsCount { get; set; }
+        public override TResponse Handle<TRequest, TResponse>(TRequest request)
+        {
+            ++InvocationsCount;
+            return HandleNext<TRequest, TResponse>(request);
+        }
+    }
+
     [Fact]
     public void Send_without_behaviors_throws()
     {
@@ -27,6 +37,21 @@ public class SendRequestsTests
         // Assert
         actWithoutReturn.Should().Throw<InvalidOperationException>();
         actWithReturn.Should().Throw<InvalidOperationException>();
+    }
+
+
+    [Fact]
+    public void Send_without_handlers_returns_default()
+    {
+        // Arrange
+        var pipeline = new Pipeline()
+            .AppendBehavior<TestBehavior>();
+
+        // Act
+        var actual = pipeline.Send<RequestB, int>(new());
+
+        // Assert
+        actual.Should().Be(default);
     }
 }
 
