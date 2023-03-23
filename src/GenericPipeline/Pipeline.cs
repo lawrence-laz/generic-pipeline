@@ -22,7 +22,6 @@ public sealed class Pipeline
             throw new ArgumentNullException(nameof(instance));
         }
 
-
         if (_firstBehavior is null)
         {
             _firstBehavior = instance;
@@ -49,7 +48,6 @@ public sealed class Pipeline
         {
             throw new ArgumentNullException(nameof(instance));
         }
-
 
         if (_firstBehavior is null)
         {
@@ -107,11 +105,18 @@ public sealed class Pipeline
         return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
     }
 
-    /// TOOD
+    /// <summary>
+    /// Tries to get the handler of the specified type from the pipeline.
+    /// </summary>
+    /// <typeparam name="THandler">The type of the handler to get.</typeparam>
+    /// <param name="handler">The handler of the specified type, if found in the pipeline.</param>
+    /// <returns>True if the handler was found, false otherwise.</returns>
     public bool TryGetHandler<THandler>([NotNullWhen(true)] out THandler? handler)
         where THandler : IRequestHandler
     {
         // TODO: GetHandlers method?
+
+        // Tries to get the handler from the SingleHandlerBehavior.
         var singleHandlerBehavior = GetBehaviors()
             .OfType<SingleHandlerBehavior<THandler>>()
             .FirstOrDefault();
@@ -120,6 +125,8 @@ public sealed class Pipeline
             handler = singleHandlerBehavior._handler;
             return true;
         }
+
+        // Tries to get the handler from the MediatorBehavior.
         var requestHandlerFromMediator = GetBehaviors()
             .OfType<MediatorBehavior>()
             .SelectMany(mediator => mediator._requestHandlers.Values)
@@ -135,7 +142,12 @@ public sealed class Pipeline
         return false;
     }
 
-    /// TODO
+    /// <summary>
+    /// Gets the handler of the specified type from the pipeline.
+    /// </summary>
+    /// <typeparam name="THandler">The type of the handler to get.</typeparam>
+    /// <returns>The handler of the specified type.</returns>
+    /// <exception cref="HandlerNotFoundException">If the handler was not found in the pipeline.</exception>
     public THandler GetHandler<THandler>()
         where THandler : IRequestHandler
     {

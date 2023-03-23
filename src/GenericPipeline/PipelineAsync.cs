@@ -1,11 +1,19 @@
 namespace GenericPipeline;
 
-/// TODO
+/// <summary>
+/// Represents a pipeline of behaviors that can be used to process requests of different types asynchronously.
+/// </summary>
 public sealed class PipelineAsync
 {
     private PipelineBehaviorAsync? _firstBehavior;
 
-    /// TODO
+    /// <summary>
+    /// Appends a behavior to the end of the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to append.</typeparam>
+    /// <param name="instance">The instance of the behavior to append.</param>
+    /// <returns>The pipeline instance, to enable method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="instance"/> is null.</exception>
     public PipelineAsync AppendBehavior<TBehavior>(TBehavior instance)
         where TBehavior : PipelineBehaviorAsync
     {
@@ -26,7 +34,13 @@ public sealed class PipelineAsync
         return this;
     }
 
-    /// TODO
+    /// <summary>
+    /// Prepends a behavior to the beginning of the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to prepend.</typeparam>
+    /// <param name="instance">The instance of the behavior to prepend.</param>
+    /// <returns>The pipeline instance, to enable method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="instance"/> is null.</exception>
     public PipelineAsync PrependBehavior<TBehavior>(TBehavior instance)
         where TBehavior : PipelineBehaviorAsync
     {
@@ -48,7 +62,15 @@ public sealed class PipelineAsync
         return this;
     }
 
-    /// TODO
+
+    /// <summary>
+    /// Sends a request through the pipeline asynchronously and returns the response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="request">The request to send.</param>
+    /// <returns>The response of the request.</returns>
+    /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request)
         where TRequest : IRequest<TResponse>
     {
@@ -60,14 +82,25 @@ public sealed class PipelineAsync
         return await _firstBehavior.Handle<TRequest, TResponse>(request);
     }
 
-    /// TODO
+    /// <summary>
+    /// Sends a request through the pipeline asynchronously.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <param name="request">The request to send.</param>
+    /// <returns>A unit value representing the completion of the request.</returns>
+    /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public Task<Unit> SendAsync<TRequest>(TRequest request)
         where TRequest : IRequest<Unit>
     {
         return SendAsync<TRequest, Unit>(request);
     }
 
-    /// TODO
+    /// <summary>
+    /// Gets the handler of the specified type from the pipeline.
+    /// </summary>
+    /// <typeparam name="THandler">The type of the handler to get.</typeparam>
+    /// <returns>The handler of the specified type.</returns>
+    /// <exception cref="HandlerNotFoundException">If the handler was not found in the pipeline.</exception>
     public THandler GetHandler<THandler>()
         where THandler : IRequestHandler
     {
@@ -93,13 +126,21 @@ public sealed class PipelineAsync
 
         throw new HandlerNotFoundException();
     }
-    /// TODO
+
+    /// <summary>
+    /// Gets the first behavior of the specified type in the pipeline.
+    /// </summary>
+    /// <typeparam name="TBehavior">The type of the behavior to get.</typeparam>
+    /// <returns>The instance of the behavior.</returns>
     public TBehavior GetBehavior<TBehavior>() where TBehavior : PipelineBehaviorAsync
     {
         return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
     }
 
-    /// TODO iterators allocate memory, could be implemented as a simple loop with static lambda
+    /// <summary>
+    /// Gets an enumerable collection of all behaviors in the pipeline, in the order they are executed.
+    /// </summary>
+    /// <returns>An enumerable collection of behaviors in the pipeline.</returns>
     public IEnumerable<PipelineBehaviorAsync> GetBehaviors()
     {
         if (_firstBehavior is null)

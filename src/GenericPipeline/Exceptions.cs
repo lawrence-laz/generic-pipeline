@@ -90,18 +90,29 @@ public sealed class DuplicateHandlerException : GenericPipelineException
     public DuplicateHandlerException(string message, System.Exception inner) : base(message, inner) { }
 }
 
-/// TODO
+/// <summary>
+/// Represents an exception that is thrown when a handler is not found in the pipeline.
+/// </summary>
 [System.Serializable]
 public sealed class HandlerNotFoundException : GenericPipelineException
 {
-    /// TODO
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HandlerNotFoundException"/> class with default values.
+    /// </summary>
     public HandlerNotFoundException() { } // TODO: add message
 
-    /// TODO
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HandlerNotFoundException"/> class with a specified error message.
+    /// </summary>
+    /// <param name="message">The error message that explains the reason for the exception.</param>
     [ExcludeFromCodeCoverage]
     public HandlerNotFoundException(string message) : base(message) { }
 
-    /// TODO
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HandlerNotFoundException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+    /// </summary>
+    /// <param name="message">The error message that explains the reason for the exception.</param>
+    /// <param name="inner">The exception that is the cause of the current exception.</param>
     [ExcludeFromCodeCoverage]
     public HandlerNotFoundException(string message, System.Exception inner) : base(message, inner) { }
 }

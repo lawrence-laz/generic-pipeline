@@ -16,6 +16,11 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
     /// <exception cref="ArgumentException">Thrown when the provided handler is not a valid request handler.</exception>
     public SingleHandlerBehavior(THandler handler)
     {
+        if (handler is null)
+        {
+            throw new ArgumentNullException(nameof(handler));
+        }
+
         _handler = handler;
     }
 

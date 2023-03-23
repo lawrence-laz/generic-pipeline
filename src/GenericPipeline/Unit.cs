@@ -10,10 +10,16 @@ public struct Unit : IEquatable<Unit>
     /// </summary>
     public static readonly Unit Value = new();
 
-    /// TODO
+    /// <summary>
+    /// Gets a singleton instance of <see cref="Task{TResult}"/> with a result of <see cref="Value"/>.
+    /// </summary>
     public static readonly Task<Unit> ValueTask = Task.FromResult(Value);
 
-    /// TODO
+    /// <summary>
+    /// Determines whether this instance of <see cref="Unit"/> is equal to another instance of <see cref="Unit"/>.
+    /// </summary>
+    /// <param name="other">The other instance of <see cref="Unit"/> to compare for equality.</param>
+    /// <returns><c>true</c>, since <see cref="Unit"/> is a singleton and all instances are equal.</returns>
     public bool Equals(Unit other) => true;
 }
 
