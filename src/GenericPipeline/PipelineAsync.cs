@@ -112,16 +112,15 @@ public sealed class PipelineAsync
             return singleHandlerBehavior._handler;
         }
 
-        // TODO
-        // var requestHandlerFromMediator = GetBehaviors()
-        //     .OfType<MediatorBehavior>()
-        //     .SelectMany(mediator => mediator._requestHandlers)
-        //     .OfType<THandler>()
-        //     .FirstOrDefault();
-        // if (requestHandlerFromMediator is not null)
-        // {
-        //     return requestHandlerFromMediator;
-        // }
+        var requestHandlerFromMediator = GetBehaviors()
+            .OfType<MediatorBehaviorAsync>()
+            .SelectMany(mediator => mediator._requestHandlers.Values)
+            .OfType<THandler>()
+            .FirstOrDefault();
+        if (requestHandlerFromMediator is not null)
+        {
+            return requestHandlerFromMediator;
+        }
 
         throw new HandlerNotFoundException($"The requested handler {typeof(THandler).Name} was not found in the pipeline.");
     }

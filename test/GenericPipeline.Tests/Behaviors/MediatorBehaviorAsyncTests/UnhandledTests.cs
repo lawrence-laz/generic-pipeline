@@ -1,4 +1,4 @@
-namespace GenericPipeline.Tests.Behaviors.MediatorBehaviorTests;
+namespace GenericPipeline.Tests.Behaviors.MediatorBehaviorAsyncTests;
 
 public class UnhandledTests
 {

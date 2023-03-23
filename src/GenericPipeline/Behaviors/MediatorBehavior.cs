@@ -46,21 +46,6 @@ public class MediatorBehavior : PipelineBehavior
         return this;
     }
 
-    // public MediatorBehavior AddHandler<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
-    //     where TRequest : IRequest<TResponse>
-    // {
-    //     // _requestHandlers.Add(handler);
-    //     return this;
-    // }
-    //
-    // public MediatorBehavior ReplaceHandler<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
-    //     where TRequest : IRequest<TResponse>
-    // {
-    //     // _requestHandlers.RemoveWhere(handler => handler is IRequestHandler<TRequest, TResponse>);
-    //     AddHandler(handler);
-    //     return this;
-    // }
-
     /// <summary>
     /// Handles the specified request by dispatching it to the appropriate request handler.
     /// </summary>

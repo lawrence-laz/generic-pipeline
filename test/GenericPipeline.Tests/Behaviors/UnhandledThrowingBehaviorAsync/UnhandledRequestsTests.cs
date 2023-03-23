@@ -20,8 +20,8 @@ public class UnhandledRequestsTests
         // Arrange
         var pipeline = new PipelineAsync()
             .AppendHandler<RequestHandlerA>()
-            // .AppendBehavior(new MediatorBehavior() // TODO: Once MediatorAsync is ready
-            //     .AddHandler<RequestHandlerB>())
+            .AppendBehavior(new MediatorBehaviorAsync()
+                .AddHandler<RequestHandlerB>())
             .ThrowOnUnhandledRequest();
 
         // Act
