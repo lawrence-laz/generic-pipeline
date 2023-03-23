@@ -2,17 +2,30 @@ namespace GenericPipeline.Tests.Behaviors.UnhandledThrowingBehaviorAsync;
 
 public class UnhandledRequestsTests
 {
-    public record struct Request : IRequest;
+    public record struct RequestA : IRequest;
+    public record struct RequestB : IRequest;
+    public record struct UnhandledRequest : IRequest;
+    public class RequestHandlerA : IRequestHandler<RequestA>
+    {
+        public Unit Handle(RequestA request) => throw new NotImplementedException();
+    }
+    public class RequestHandlerB : IRequestHandler<RequestB>
+    {
+        public Unit Handle(RequestB request) => throw new NotImplementedException();
+    }
 
     [Fact]
     public async Task Sending_unhandled_request_can_throw_if_configured_so()
     {
         // Arrange
         var pipeline = new PipelineAsync()
+            .AppendHandler<RequestHandlerA>()
+            // .AppendBehavior(new MediatorBehavior() // TODO: Once MediatorAsync is ready
+            //     .AddHandler<RequestHandlerB>())
             .ThrowOnUnhandledRequest();
 
         // Act
-        var act = async () => await pipeline.SendAsync<Request>(new());
+        var act = async () => await pipeline.SendAsync<UnhandledRequest>(new());
 
         // Assert
         await act.Should().ThrowExactlyAsync<UnhandledRequestException>();
