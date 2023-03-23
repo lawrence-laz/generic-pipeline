@@ -97,7 +97,6 @@ public static class PipelineExtensions
             .First(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
             .GetGenericArguments()
             .First();
-        var methods = typeof(Pipeline).GetMethods();
         var sendMethod = typeof(Pipeline)
             .GetMethods()
             .First(method => method.Name == nameof(Pipeline.Send) && method.GetGenericArguments().Length == 2)

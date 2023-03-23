@@ -123,7 +123,7 @@ public sealed class Pipeline
         var requestHandlerFromMediator = GetBehaviors()
             .OfType<MediatorBehavior>()
             .SelectMany(mediator => mediator._requestHandlers.Values)
-            .ToList().OfType<THandler>()
+            .OfType<THandler>()
             .FirstOrDefault();
         if (requestHandlerFromMediator is not null)
         {
