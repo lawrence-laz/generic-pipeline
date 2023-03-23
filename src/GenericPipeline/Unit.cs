@@ -3,7 +3,7 @@ namespace GenericPipeline;
 /// <summary>
 /// Represents a unit value, which is a value that carries no information.
 /// </summary>
-public struct Unit
+public struct Unit : IEquatable<Unit>
 {
     /// <summary>
     /// Gets a singleton instance of the <see cref="Unit"/> struct.
@@ -12,5 +12,8 @@ public struct Unit
 
     /// TODO
     public static readonly Task<Unit> ValueTask = Task.FromResult(Value);
+
+    /// TODO
+    public bool Equals(Unit other) => true;
 }
 

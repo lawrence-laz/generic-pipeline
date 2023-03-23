@@ -12,7 +12,7 @@ public interface IRequestHandler
 /// </summary>
 /// <typeparam name="TRequest">The type of the request message.</typeparam>
 /// <typeparam name="TResponse">The type of the response message.</typeparam>
-public interface IRequestHandler<TRequest, TResponse> : IRequestHandler
+public interface IRequestHandler<TRequest, out TResponse> : IRequestHandler
     where TRequest : IRequest<TResponse>
 {
     /// <summary>
