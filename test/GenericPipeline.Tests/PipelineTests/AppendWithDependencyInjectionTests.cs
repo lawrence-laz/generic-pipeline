@@ -1,9 +1,11 @@
-namespace GenericPipeline.Extensions.DependencyInjection.Tests;
+using Microsoft.Extensions.DependencyInjection;
 
-public class PipelineExtensionsTests
+namespace GenericPipeline.Tests.PipelineTests;
+
+public class AppendWithDependencyInjectionTests
 {
     [Fact]
-    public void Test1()
+    public void Append_pipeline_from_dependency_injection()
     {
         // Arrange
         var serviceProvider = new ServiceCollection()
@@ -23,6 +25,37 @@ public class PipelineExtensionsTests
         // Assert
         actual.DependencyFromBehavior.Should().Be(expectedDependency);
         actual.DependencyFromHandler.Should().Be(expectedDependency);
+    }
+
+
+    [Fact]
+    public void Append_unregistered_behavior_throws()
+    {
+        // Arrange
+        var serviceProvider = new ServiceCollection()
+            .BuildServiceProvider();
+        var sut = new Pipeline();
+
+        // Act
+        var act = () => sut.AppendBehavior<TestBehavior>(serviceProvider);
+
+        // Assert
+        act.Should().Throw<GenericPipelineException>().WithMessage("Failed to resolve behavior*");
+    }
+
+    [Fact]
+    public void Append_unregistered_handler_throws()
+    {
+        // Arrange
+        var serviceProvider = new ServiceCollection()
+            .BuildServiceProvider();
+        var sut = new Pipeline();
+
+        // Act
+        var act = () => sut.AppendHandler<TestHandler>(serviceProvider);
+
+        // Assert
+        act.Should().Throw<GenericPipelineException>().WithMessage("Failed to resolve handler*");
     }
 }
 

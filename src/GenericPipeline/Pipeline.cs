@@ -114,8 +114,6 @@ public sealed class Pipeline
     public bool TryGetHandler<THandler>([NotNullWhen(true)] out THandler? handler)
         where THandler : IRequestHandler
     {
-        // TODO: GetHandlers method?
-
         // Tries to get the handler from the SingleHandlerBehavior.
         var singleHandlerBehavior = GetBehaviors()
             .OfType<SingleHandlerBehavior<THandler>>()
@@ -153,7 +151,7 @@ public sealed class Pipeline
     {
         if (!TryGetHandler<THandler>(out var handler))
         {
-            throw new HandlerNotFoundException();
+            throw new HandlerNotFoundException($"The requested handler {typeof(THandler).Name} was not found in the pipeline.");
         }
         return handler;
     }

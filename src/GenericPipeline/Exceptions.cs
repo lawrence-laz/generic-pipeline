@@ -9,6 +9,7 @@ public class GenericPipelineException : System.Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="GenericPipelineException"/> class with default values.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public GenericPipelineException() { }
 
     /// <summary>
@@ -99,13 +100,13 @@ public sealed class HandlerNotFoundException : GenericPipelineException
     /// <summary>
     /// Initializes a new instance of the <see cref="HandlerNotFoundException"/> class with default values.
     /// </summary>
-    public HandlerNotFoundException() { } // TODO: add message
+    [ExcludeFromCodeCoverage]
+    public HandlerNotFoundException() { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HandlerNotFoundException"/> class with a specified error message.
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception.</param>
-    [ExcludeFromCodeCoverage]
     public HandlerNotFoundException(string message) : base(message) { }
 
     /// <summary>

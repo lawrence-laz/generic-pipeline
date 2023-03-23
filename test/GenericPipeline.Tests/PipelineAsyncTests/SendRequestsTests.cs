@@ -9,8 +9,9 @@ public class SendRequestsTests
         IRequestHandlerAsync<RequestA>,
         IRequestHandler<RequestB, int>
     {
+        public int Expected { get; set; }
         public Task<Unit> Handle(RequestA request) => Unit.ValueTask;
-        public int Handle(RequestB request) => 0;
+        public int Handle(RequestB request) => Expected;
     }
 
     public class TestBehavior : PipelineBehaviorAsync
@@ -52,6 +53,24 @@ public class SendRequestsTests
 
         // Assert
         actual.Should().Be(default);
+    }
+
+    [Theory, AutoData]
+    public async Task Send_request_as_object(int expected)
+    {
+        // Arrange
+        var request = Activator.CreateInstance(typeof(RequestB));
+        var handler = new TestHandler();
+        handler.Expected = expected;
+        var pipeline = new PipelineAsync()
+            .AppendBehavior<TestBehavior>()
+            .AppendHandler(handler);
+
+        // Act
+        var actual = await pipeline.SendAsync(request!);
+
+        // Assert
+        actual.Should().Be(expected);
     }
 }
 

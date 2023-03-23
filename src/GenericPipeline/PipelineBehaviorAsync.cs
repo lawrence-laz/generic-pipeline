@@ -1,15 +1,32 @@
 namespace GenericPipeline;
-/// TODO
+
+/// <summary>
+/// Represents a behavior that can be used in an asynchronous pipeline.
+/// </summary>
 public abstract class PipelineBehaviorAsync
 {
-    /// TODO
+    /// <summary>
+    /// Gets or sets the next behavior in the pipeline.
+    /// </summary>
     public PipelineBehaviorAsync? Next { get; internal set; }
 
-    /// TODO
+    /// <summary>
+    /// Handles a request and returns the response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="request">The request to handle.</param>
+    /// <returns>The response to the request.</returns>
     public abstract Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
         where TRequest : IRequest<TResponse>;
 
-    /// TODO
+    /// <summary>
+    /// Invokes the next behavior in the pipeline and returns its response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="request">The request to handle.</param>
+    /// <returns>The response to the request.</returns>
     protected Task<TResponse> HandleNext<TRequest, TResponse>(TRequest request)
         where TRequest : IRequest<TResponse>
     {

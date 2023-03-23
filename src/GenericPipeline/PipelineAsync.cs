@@ -104,7 +104,6 @@ public sealed class PipelineAsync
     public THandler GetHandler<THandler>()
         where THandler : IRequestHandler
     {
-        // TODO: GetHandlers method?
         var singleHandlerBehavior = GetBehaviors()
             .OfType<SingleHandlerBehaviorAsync<THandler>>()
             .FirstOrDefault();
@@ -124,7 +123,7 @@ public sealed class PipelineAsync
         //     return requestHandlerFromMediator;
         // }
 
-        throw new HandlerNotFoundException();
+        throw new HandlerNotFoundException($"The requested handler {typeof(THandler).Name} was not found in the pipeline.");
     }
 
     /// <summary>
