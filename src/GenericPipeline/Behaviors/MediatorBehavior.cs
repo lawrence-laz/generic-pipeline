@@ -22,6 +22,19 @@ public class MediatorBehavior : PipelineBehavior
     }
 
     /// <summary>
+    /// Adds a new request handler of the specified type to the list of request handlers that can handle requests.
+    /// </summary>
+    /// <typeparam name="THandler">The type of the request handler to add.</typeparam>
+    /// <param name="serviceProvider">The service provider used to resolve the handler instance.</param>
+    /// <returns>The updated mediator behavior instance.</returns>
+    public MediatorBehavior AddHandler<THandler>(IServiceProvider serviceProvider)
+        where THandler : IRequestHandler
+    {
+        AddHandler(serviceProvider.GetHandler<THandler>());
+        return this;
+    }
+
+    /// <summary>
     /// Adds the specified handler to the list of request handlers that can handle requests.
     /// </summary>
     /// <param name="handler">The request handler to add.</param>
@@ -42,7 +55,6 @@ public class MediatorBehavior : PipelineBehavior
                     "has already been added to the mediator behavior instance.");
             }
         }
-
         return this;
     }
 

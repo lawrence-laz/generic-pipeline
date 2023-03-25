@@ -13,9 +13,7 @@ public static class PipelineExtensions
     /// <returns>The modified pipeline instance.</returns>
     public static Pipeline AppendBehavior<TBehavior>(this Pipeline pipeline)
         where TBehavior : PipelineBehavior, new()
-    {
-        return pipeline.AppendBehavior(new TBehavior());
-    }
+        => pipeline.AppendBehavior(new TBehavior());
 
     /// <summary>
     /// Appends a handler of the specified type to the pipeline.
@@ -25,9 +23,7 @@ public static class PipelineExtensions
     /// <returns>The modified pipeline instance.</returns>
     public static Pipeline AppendHandler<THandler>(this Pipeline pipeline)
         where THandler : IRequestHandler, new()
-    {
-        return pipeline.AppendHandler(new THandler());
-    }
+        => pipeline.AppendHandler(new THandler());
 
     /// <summary>
     /// Appends a handler of the specified type to the pipeline.
@@ -70,9 +66,7 @@ public static class PipelineExtensions
         this Pipeline pipeline,
         THandler handler)
         where THandler : IRequestHandler
-    {
-        return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler));
-    }
+        => pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(handler));
 
     /// <summary>
     /// Sends a request through the pipeline and returns the response.
@@ -108,9 +102,7 @@ public static class PipelineExtensions
     /// <param name="pipeline">The pipeline to add the behavior to.</param>
     /// <returns>The pipeline with the added behavior.</returns>
     public static Pipeline ThrowOnUnhandledRequest(this Pipeline pipeline)
-    {
-        return pipeline.AppendBehavior<UnhandledThrowingBehavior>();
-    }
+        => pipeline.AppendBehavior<UnhandledThrowingBehavior>();
 
     /// <summary>
     /// Appends a behavior of type <typeparamref name="TBehavior"/> to the end of the pipeline.
@@ -123,15 +115,7 @@ public static class PipelineExtensions
         this Pipeline pipeline,
         IServiceProvider serviceProvider)
         where TBehavior : PipelineBehavior
-    {
-        var behavior = serviceProvider.GetService(typeof(TBehavior));
-        if (behavior is null)
-        {
-            throw new GenericPipelineException($"Failed to resolve behavior {typeof(TBehavior).Name} from the service provider.");
-        }
-
-        return pipeline.AppendBehavior((TBehavior)behavior);
-    }
+        => pipeline.AppendBehavior(serviceProvider.GetBehavior<TBehavior>());
 
     /// <summary>
     /// Appends a handler of type <typeparamref name="THandler"/> to the end of the pipeline.
@@ -144,14 +128,6 @@ public static class PipelineExtensions
         this Pipeline pipeline,
         IServiceProvider serviceProvider)
         where THandler : IRequestHandler
-    {
-        var handler = serviceProvider.GetService(typeof(THandler));
-        if (handler is null)
-        {
-            throw new GenericPipelineException($"Failed to resolve handler {typeof(THandler).Name} from the service provider.");
-        }
-
-        return pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>((THandler)handler));
-    }
+        => pipeline.AppendBehavior(new SingleHandlerBehavior<THandler>(serviceProvider.GetHandler<THandler>()));
 }
 
