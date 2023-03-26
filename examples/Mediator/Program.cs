@@ -52,7 +52,7 @@ public class FormalGreetingHandler : IRequestHandler<HelloRequest, string>
 // This is the mediator implementation used for this example.
 public class MediatorBehavior : PipelineBehavior
 {
-    private HashSet<object> _requestHandlers = new();
+    private readonly HashSet<object> _requestHandlers = new();
 
     public MediatorBehavior AddHandler<TRequest, TResponse>(IRequestHandler<TRequest, TResponse> handler)
         where TRequest : IRequest<TResponse>

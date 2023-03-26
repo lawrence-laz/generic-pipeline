@@ -3,8 +3,8 @@ namespace GenericPipeline;
 /// <summary>
 /// Represents an exception that is thrown when an error occurs in the pipeline.
 /// </summary>
-[System.Serializable]
-public class GenericPipelineException : System.Exception
+[Serializable]
+public class GenericPipelineException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="GenericPipelineException"/> class with default values.
@@ -24,7 +24,7 @@ public class GenericPipelineException : System.Exception
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
     [ExcludeFromCodeCoverage]
-    public GenericPipelineException(string message, System.Exception inner) : base(message, inner) { }
+    public GenericPipelineException(string message, Exception inner) : base(message, inner) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GenericPipelineException"/> class with serialized data.
@@ -40,7 +40,7 @@ public class GenericPipelineException : System.Exception
 /// <summary>
 /// Represents an exception that is thrown when the pipeline cannot handle a request.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public sealed class UnhandledRequestException : GenericPipelineException
 {
     /// <summary>
@@ -61,13 +61,13 @@ public sealed class UnhandledRequestException : GenericPipelineException
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
     [ExcludeFromCodeCoverage]
-    public UnhandledRequestException(string message, System.Exception inner) : base(message, inner) { }
+    public UnhandledRequestException(string message, Exception inner) : base(message, inner) { }
 }
 
 /// <summary>
 /// Represents an exception that is thrown when a duplicate handler is found in the pipeline.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public sealed class DuplicateHandlerException : GenericPipelineException
 {
     /// <summary>
@@ -88,13 +88,13 @@ public sealed class DuplicateHandlerException : GenericPipelineException
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
     [ExcludeFromCodeCoverage]
-    public DuplicateHandlerException(string message, System.Exception inner) : base(message, inner) { }
+    public DuplicateHandlerException(string message, Exception inner) : base(message, inner) { }
 }
 
 /// <summary>
 /// Represents an exception that is thrown when a handler is not found in the pipeline.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public sealed class HandlerNotFoundException : GenericPipelineException
 {
     /// <summary>
@@ -115,6 +115,6 @@ public sealed class HandlerNotFoundException : GenericPipelineException
     /// <param name="message">The error message that explains the reason for the exception.</param>
     /// <param name="inner">The exception that is the cause of the current exception.</param>
     [ExcludeFromCodeCoverage]
-    public HandlerNotFoundException(string message, System.Exception inner) : base(message, inner) { }
+    public HandlerNotFoundException(string message, Exception inner) : base(message, inner) { }
 }
 

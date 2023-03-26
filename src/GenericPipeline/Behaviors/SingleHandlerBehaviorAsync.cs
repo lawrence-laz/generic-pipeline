@@ -7,7 +7,7 @@ namespace GenericPipeline.Behaviors;
 public class SingleHandlerBehaviorAsync<TRequestHandler> : PipelineBehaviorAsync
     where TRequestHandler : IRequestHandler
 {
-    internal readonly TRequestHandler _handler;
+    internal readonly TRequestHandler Handler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SingleHandlerBehaviorAsync{TRequestHandler}"/> class with the specified request handler.
@@ -21,7 +21,7 @@ public class SingleHandlerBehaviorAsync<TRequestHandler> : PipelineBehaviorAsync
             throw new ArgumentNullException(nameof(handler));
         }
 
-        _handler = handler;
+        Handler = handler;
     }
 
     /// <summary>
@@ -34,17 +34,17 @@ public class SingleHandlerBehaviorAsync<TRequestHandler> : PipelineBehaviorAsync
     /// <returns>The response of the handled request.</returns>
     public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
     {
-        if (_handler is IRequestHandlerAsync<TRequest, TResponse> handlerAsync)
+        if (Handler is IRequestHandlerAsync<TRequest, TResponse> handlerAsync)
         {
-            return await handlerAsync.Handle(request);
+            return await handlerAsync.Handle(request).ConfigureAwait(false);
         }
-        else if (_handler is IRequestHandler<TRequest, TResponse> handler)
+        else if (Handler is IRequestHandler<TRequest, TResponse> handler)
         {
             return handler.Handle(request);
         }
         else
         {
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request).ConfigureAwait(false);
         }
     }
 }

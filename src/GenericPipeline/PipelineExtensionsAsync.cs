@@ -13,9 +13,7 @@ public static class PipelineAsyncExtensions
     /// <returns>The modified pipeline instance.</returns>
     public static PipelineAsync AppendBehavior<TBehavior>(this PipelineAsync pipeline)
         where TBehavior : PipelineBehaviorAsync, new()
-    {
-        return pipeline.AppendBehavior(new TBehavior());
-    }
+        => pipeline.AppendBehavior(new TBehavior());
 
     /// <summary>
     /// Appends a handler of the specified type to the pipeline.
@@ -25,9 +23,7 @@ public static class PipelineAsyncExtensions
     /// <returns>The modified pipeline instance.</returns>
     public static PipelineAsync AppendHandler<THandler>(this PipelineAsync pipeline)
         where THandler : IRequestHandler, new()
-    {
-        return pipeline.AppendHandler<THandler>(new THandler());
-    }
+        => pipeline.AppendHandler(new THandler());
 
     /// <summary>
     /// Appends a handler of the specified type to the pipeline.
@@ -70,9 +66,7 @@ public static class PipelineAsyncExtensions
         this PipelineAsync pipeline,
         THandler handler)
         where THandler : IRequestHandler
-    {
-        return pipeline.AppendBehavior(new SingleHandlerBehaviorAsync<THandler>(handler));
-    }
+        => pipeline.AppendBehavior(new SingleHandlerBehaviorAsync<THandler>(handler));
 
     /// <summary>
     /// Adds a behavior to the pipeline that throws an exception if an unhandled request is encountered.
@@ -80,9 +74,7 @@ public static class PipelineAsyncExtensions
     /// <param name="pipeline">The pipeline to add the behavior to.</param>
     /// <returns>The pipeline with the added behavior.</returns>
     public static PipelineAsync ThrowOnUnhandledRequest(this PipelineAsync pipeline)
-    {
-        return pipeline.AppendBehavior<UnhandledThrowingBehaviorAsync>();
-    }
+        => pipeline.AppendBehavior<UnhandledThrowingBehaviorAsync>();
 
     /// <summary>
     /// Sends a request through the pipeline and returns the response.
@@ -97,18 +89,28 @@ public static class PipelineAsyncExtensions
         this PipelineAsync pipeline,
         object request)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request));
+        }
         var requestType = request.GetType();
         var responseType = requestType
             .GetInterfaces()
-            .First(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
-            .GetGenericArguments()
-            .First();
+            .FirstOrDefault(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
+            ?.GetGenericArguments()
+            .FirstOrDefault();
+        if (responseType is null)
+        {
+            throw new ArgumentException(
+                $"Request of type '{request.GetType().Name}' does not implement '{nameof(IRequest)}' interface.",
+                nameof(request));
+        }
         var sendMethod = typeof(PipelineAsync)
             .GetMethods()
             .First(method => method.Name == nameof(PipelineAsync.SendAsync) && method.GetGenericArguments().Length == 2)
             .MakeGenericMethod(requestType, responseType);
         var task = (Task)sendMethod.Invoke(pipeline, new[] { request });
-        await task;
+        await task.ConfigureAwait(false);
         var resultProperty = typeof(Task<>).MakeGenericType(responseType).GetProperty(nameof(Task<object>.Result));
         var result = resultProperty.GetValue(task);
         return result;

@@ -7,7 +7,7 @@ namespace GenericPipeline.Behaviors;
 public class SingleHandlerBehavior<THandler> : PipelineBehavior
     where THandler : IRequestHandler
 {
-    internal readonly THandler _handler;
+    internal readonly THandler Handler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SingleHandlerBehavior{THandler}"/> class with the specified request handler.
@@ -21,7 +21,7 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
             throw new ArgumentNullException(nameof(handler));
         }
 
-        _handler = handler;
+        Handler = handler;
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class SingleHandlerBehavior<THandler> : PipelineBehavior
     /// <returns>The response of the handled request.</returns>
     public override TResponse Handle<TRequest, TResponse>(TRequest request)
     {
-        if (_handler is IRequestHandler<TRequest, TResponse> handler)
+        if (Handler is IRequestHandler<TRequest, TResponse> handler)
         {
             return handler.Handle(request);
         }

@@ -4,56 +4,49 @@ public class UnhandledTests
 {
     public record struct RequestWithoutHandler() : IRequest;
 
-    public class BehaviorAfterMediator : PipelineBehavior
+    public class BehaviorAfterMediator : PipelineBehaviorAsync
     {
         public bool WasCalled;
 
-        public override TResponse Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
         {
             WasCalled = true;
-            return HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request);
         }
     }
 
-    // [Fact]
-    // public void Send_unhandled_requests_when_options_are_set_to_throw()
-    // {
-    //     // Arrange
-    //     var options = new HandlerOptions()
-    //     {
-    //         ThrowUhandledRequestType = true
-    //     };
-    //     var behaviorAfterMediator = new BehaviorAfterMediator();
-    //     var pipeline = new Pipeline()
-    //         .AppendBehavior(new MediatorBehavior(options))
-    //         .AppendBehavior(behaviorAfterMediator);
-    //
-    //     // Act
-    //     var act = () => pipeline.Send<RequestWithoutHandler, Unit>(new());
-    //
-    //     // Assert
-    //     act.Should().Throw<UnhandledRequestException>();
-    //     behaviorAfterMediator.WasCalled.Should().BeFalse();
-    // }
-    //
-    // [Fact]
-    // public void Send_unhandled_requests_when_options_are_set_not_to_throw()
-    // {
-    //     // Arrange
-    //     var options = new HandlerOptions()
-    //     {
-    //         ThrowUhandledRequestType = false
-    //     };
-    //     var behaviorAfterMediator = new BehaviorAfterMediator();
-    //     var pipeline = new Pipeline()
-    //         .AppendBehavior(new MediatorBehavior(options))
-    //         .AppendBehavior(behaviorAfterMediator);
-    //
-    //     // Act
-    //     var act = () => pipeline.Send<RequestWithoutHandler, Unit>(new());
-    //
-    //     // Assert
-    //     act.Should().NotThrow();
-    //     behaviorAfterMediator.WasCalled.Should().BeTrue();
-    // }
+    [Fact]
+    public async Task I_can_send_unhandled_requests_without_throwing_an_excpetion()
+    {
+        // Arrange
+        var behaviorAfterMediator = new BehaviorAfterMediator();
+        var pipeline = new PipelineAsync()
+            .AppendBehavior(new MediatorBehaviorAsync())
+            .AppendBehavior(behaviorAfterMediator);
+
+        // Act
+        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new());
+
+        // Assert
+        await act.Should().NotThrowAsync("because behaviors do not throw by default when requests are unhandled");
+        behaviorAfterMediator.WasCalled.Should().BeTrue("because no exception was thrown");
+    }
+
+    [Fact]
+    public async Task I_can_send_unhandled_requests_with_throwing_an_exception()
+    {
+        // Arrange
+        var behaviorAfterMediator = new BehaviorAfterMediator();
+        var pipeline = new PipelineAsync()
+            .AppendBehavior(new MediatorBehaviorAsync()).ThrowOnUnhandledRequest()
+            .AppendBehavior(behaviorAfterMediator);
+
+        // Act
+        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new());
+
+        // Assert
+        await act.Should().ThrowAsync<UnhandledRequestException>(
+            $"because the pipeline was build with {nameof(PipelineAsyncExtensions.ThrowOnUnhandledRequest)} behavior");
+        behaviorAfterMediator.WasCalled.Should().BeFalse("because an exception stops the execution");
+    }
 }

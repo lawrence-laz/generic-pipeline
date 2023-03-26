@@ -81,12 +81,22 @@ public static class PipelineExtensions
         this Pipeline pipeline,
         object request)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request));
+        }
         var requestType = request.GetType();
         var responseType = requestType
             .GetInterfaces()
-            .First(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
-            .GetGenericArguments()
-            .First();
+            .FirstOrDefault(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
+            ?.GetGenericArguments()
+            .FirstOrDefault();
+        if (responseType is null)
+        {
+            throw new ArgumentException(
+                $"Request of type '{request.GetType().Name}' does not implement '{nameof(IRequest)}' interface.",
+                nameof(request));
+        }
         var sendMethod = typeof(Pipeline)
             .GetMethods()
             .First(method => method.Name == nameof(Pipeline.Send) && method.GetGenericArguments().Length == 2)

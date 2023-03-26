@@ -14,10 +14,8 @@ public sealed class UnhandledThrowingBehavior : PipelineBehavior
     /// <returns>This method always throws an exception and does not return a value.</returns>
     /// <exception cref="UnhandledRequestException">Thrown to indicate that the request type is not supported.</exception>
     public override TResponse Handle<TRequest, TResponse>(TRequest request)
-    {
-        throw new UnhandledRequestException(
+        => throw new UnhandledRequestException(
             $"The request of type '{typeof(TRequest).FullName}' returning " +
             $"'{typeof(TResponse).FullName}' was not handled by any handler in the pipeline.");
-    }
 }
 

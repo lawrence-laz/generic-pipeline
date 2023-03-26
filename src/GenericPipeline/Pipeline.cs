@@ -77,7 +77,6 @@ public sealed class Pipeline
         {
             throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
-
         return _firstBehavior.Handle<TRequest, TResponse>(request);
     }
 
@@ -90,9 +89,7 @@ public sealed class Pipeline
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public Unit Send<TRequest>(TRequest request)
         where TRequest : IRequest<Unit>
-    {
-        return Send<TRequest, Unit>(request);
-    }
+        => Send<TRequest, Unit>(request);
 
     /// <summary>
     /// Gets the first behavior of the specified type in the pipeline.
@@ -101,9 +98,7 @@ public sealed class Pipeline
     /// <returns>The instance of the behavior.</returns>
     public TBehavior GetBehavior<TBehavior>()
         where TBehavior : PipelineBehavior
-    {
-        return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
-    }
+        => (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
 
     /// <summary>
     /// Tries to get the handler of the specified type from the pipeline.
@@ -120,14 +115,14 @@ public sealed class Pipeline
             .FirstOrDefault();
         if (singleHandlerBehavior is not null)
         {
-            handler = singleHandlerBehavior._handler;
+            handler = singleHandlerBehavior.Handler;
             return true;
         }
 
         // Tries to get the handler from the MediatorBehavior.
         var requestHandlerFromMediator = GetBehaviors()
             .OfType<MediatorBehavior>()
-            .SelectMany(mediator => mediator._requestHandlers.Values)
+            .SelectMany(mediator => mediator.Handlers.Handlers.Values)
             .OfType<THandler>()
             .FirstOrDefault();
         if (requestHandlerFromMediator is not null)

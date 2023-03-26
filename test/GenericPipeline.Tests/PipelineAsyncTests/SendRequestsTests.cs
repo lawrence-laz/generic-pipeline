@@ -4,6 +4,7 @@ public class SendRequestsTests
 {
     public record struct RequestA() : IRequest;
     public record struct RequestB() : IRequest<int>;
+    public record struct NotRequest;
 
     public class TestHandler :
         IRequestHandlerAsync<RequestA>,
@@ -60,8 +61,10 @@ public class SendRequestsTests
     {
         // Arrange
         var request = Activator.CreateInstance(typeof(RequestB));
-        var handler = new TestHandler();
-        handler.Expected = expected;
+        var handler = new TestHandler
+        {
+            Expected = expected
+        };
         var pipeline = new PipelineAsync()
             .AppendBehavior<TestBehavior>()
             .AppendHandler(handler);
@@ -72,5 +75,34 @@ public class SendRequestsTests
         // Assert
         actual.Should().Be(expected);
     }
+
+    [Fact]
+    public async Task Send_request_by_object_reference_with_null_throws()
+    {
+        // Arrange
+        var handler = new TestHandler();
+        var pipeline = new PipelineAsync().AppendHandler(handler);
+
+        // Act
+        var act = () => pipeline.SendAsync(request: null!);
+
+        // Assert
+        await act.Should().ThrowAsync<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task Send_request_by_object_reference_with_non_request_type_throws()
+    {
+        // Arrange
+        var handler = new TestHandler();
+        var pipeline = new PipelineAsync().AppendHandler(handler);
+
+        // Act
+        var act = () => pipeline.SendAsync(new NotRequest());
+
+        // Assert
+        await act.Should().ThrowAsync<ArgumentException>();
+    }
+
 }
 

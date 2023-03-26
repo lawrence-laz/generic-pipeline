@@ -78,8 +78,7 @@ public sealed class PipelineAsync
         {
             throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
-
-        return await _firstBehavior.Handle<TRequest, TResponse>(request);
+        return await _firstBehavior.Handle<TRequest, TResponse>(request).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -91,9 +90,7 @@ public sealed class PipelineAsync
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
     public Task<Unit> SendAsync<TRequest>(TRequest request)
         where TRequest : IRequest<Unit>
-    {
-        return SendAsync<TRequest, Unit>(request);
-    }
+        => SendAsync<TRequest, Unit>(request);
 
     /// <summary>
     /// Gets the handler of the specified type from the pipeline.
@@ -109,12 +106,12 @@ public sealed class PipelineAsync
             .FirstOrDefault();
         if (singleHandlerBehavior is not null)
         {
-            return singleHandlerBehavior._handler;
+            return singleHandlerBehavior.Handler;
         }
 
         var requestHandlerFromMediator = GetBehaviors()
             .OfType<MediatorBehaviorAsync>()
-            .SelectMany(mediator => mediator._requestHandlers.Values)
+            .SelectMany(mediator => mediator.Handlers.Handlers.Values)
             .OfType<THandler>()
             .FirstOrDefault();
         if (requestHandlerFromMediator is not null)
@@ -130,10 +127,9 @@ public sealed class PipelineAsync
     /// </summary>
     /// <typeparam name="TBehavior">The type of the behavior to get.</typeparam>
     /// <returns>The instance of the behavior.</returns>
-    public TBehavior GetBehavior<TBehavior>() where TBehavior : PipelineBehaviorAsync
-    {
-        return (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
-    }
+    public TBehavior GetBehavior<TBehavior>()
+        where TBehavior : PipelineBehaviorAsync
+        => (TBehavior)GetBehaviors().First(static behavior => behavior is TBehavior);
 
     /// <summary>
     /// Gets an enumerable collection of all behaviors in the pipeline, in the order they are executed.
