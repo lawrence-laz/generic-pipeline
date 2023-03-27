@@ -25,6 +25,23 @@ Download from [nuget.org](https://www.nuget.org/packages/GenericPipeline/0.0.1-p
 ```
 dotnet add package GenericPipeline --prerelease
 ```
+## ⚖️ Feature parity
+|                                               | GenericPipeline | MediatR | MessagePipe | PipelineNet | Mediator |
+|-----------------------------------------------|:---------------:|:-------:|:-----------:|:-----------:|:--------:|
+| Usable **without** dependency injection       |              ✔️  |     ❌  |          ❌ |          ✔️  |       ❌ |
+| Usable **with** dependency injection          |              ✔️  |     ✔️   |          ✔️  |          ✔️¹ |       ✔️  |
+| .NET framework support                        |              ✔️  |     ✔️   |          ✔️  |          ✔️  |       ❌ |
+| Allocation-free dispatching                   |              ✔️  |     ❌  |          ✔️  |          ❌ |       ✔️  |
+| Generic request handling                      |              ✔️  |     ✔️   |          ✔️  |          ❌ |       ✔️  |
+| Async and sync handlers/behaviors             |              ✔️  |     ❌  |          ✔️  |          ✔️  |       ❌ |
+| Change handlers at runtime                    |              ✔️  |     ❌  |          ❌ |          ✔️² |       ❌ |
+| Behaviors                                     |              ✔️  |     ✔️   |          ✔️  |          ✔️  |       ✔️  |
+| Streams                                       |              ❌ |     ✔️   |          ❌ |          ❌ |       ✔️  |
+| Notifications                                 |              ❌ |     ✔️   |          ✔️  |          ❌ |       ✔️  |
+
+¹ <sup>- Unity container only,</sup>
+² <sup>- add only, cannot remove</sup>
+
 
 ## ⚡️ Benchmarks
 |                 Method  |       Mean | Allocated |
