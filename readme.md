@@ -17,7 +17,6 @@ https://en.wikipedia.org/wiki/Pipeline_(software)
 - **Simplicity**: Designed with simplicity in mind, the library offers a straightforward and easy-to-use pipeline implementation.
 - **High Performance**: The library boasts exceptional performance, as demonstrated by its benchmark results.
 - **No Dispatch-Time Allocations**: With the exception of async `Task`, the library makes no dispatch-time allocations, thus providing a highly efficient pipeline implementation.
-- **No Reflection**: The library avoids using reflection, providing a faster and more secure pipeline implementation.
 - **No Dependencies**: The library has zero external dependencies, making it lightweight and easy to integrate with other projects.
 
 ## 📦️ Get started
@@ -44,16 +43,23 @@ dotnet add package GenericPipeline --prerelease
 
 
 ## ⚡️ Benchmarks
-|                 Method  |       Mean | Allocated |
-|------------------------:|-----------:|----------:|
-|          Regular method |   111.3 ns |         - |
-|  Regular method (async) | 5,058.8 ns |     560 B |
-|         **GenericPipeline** |   143.7 ns |         - |
-| **GenericPipeline (async)** | 6,085.2 ns |     848 B |
-|                 MediatR |   646.0 ns |     600 B |
-|         MediatR (async) | 6,780.9 ns |    1160 B |
-|             PipelineNet |   213.4 ns |     152 B |
-|     PipelineNet (async) | 6,961.6 ns |    1184 B |
+Overhead per invocation for each library. Scenario contains a call to a behavior and a handler.
+
+Sync:
+|                Method |         Mean | Allocated |
+|---------------------- |-------------:|----------:|
+|    Simple method call |       5.7 ns |         - |
+|       GenericPipeline |      31.2 ns |         - |
+|               MediatR |     502.8 ns |     600 B |
+|           PipelineNet |      95.4 ns |     152 B |
+
+Awaited async:
+|                Method |         Mean | Allocated |
+|---------------------- |-------------:|----------:|
+|    Simple method call |     4 863 ns |     560 B |
+|       GenericPipeline |     5 906 ns |     864 B |
+|               MediatR |     6 662 ns |    1160 B |
+|           PipelineNet |     7 017 ns |    1184 B |
  
 <sub>
 <a href="https://www.flaticon.com/free-icons/pipe" title="pipe icons">Pipe icons created by Smashicons - Flaticon</a>
