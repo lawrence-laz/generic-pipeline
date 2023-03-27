@@ -11,8 +11,6 @@
 A general purpose dependency free pipeline builder.
 https://en.wikipedia.org/wiki/Pipeline_(software)
 
-> ⚠️ This project is in active development and it's a **work in progress**. Bugs and breaking changes are to be expected while in prerelease. [Semantic versioning](https://semver.org/) and stable api is to be expected starting from `v1.0` only.
-
 ## 🌟 Features
 - **Simplicity**: Designed with simplicity in mind, the library offers a straightforward and easy-to-use pipeline implementation.
 - **High Performance**: The library boasts exceptional performance, as demonstrated by its benchmark results.
