@@ -41,7 +41,7 @@ public class TestHandler : IRequestHandler<TestRequest, string>
 
 public class PollyBehavior : PipelineBehavior
 {
-    private Policy _policy;
+    private readonly Policy _policy;
 
     public PollyBehavior(Policy policy)
     {
