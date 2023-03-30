@@ -6,7 +6,7 @@ public record struct OrderTestRequest(string Text) : IRequest<string>;
 
 public class OrderTestHandler : IRequestHandlerAsync<OrderTestRequest, string>
 {
-    public Task<string> Handle(OrderTestRequest request) => Task.FromResult(request.Text);
+    public Task<string> Handle(OrderTestRequest request, CancellationToken cancellationToken) => Task.FromResult(request.Text);
 }
 
 public class ABehavior : PipelineBehaviorAsync
@@ -18,10 +18,10 @@ public class ABehavior : PipelineBehaviorAsync
         _stringBuilder = stringBuilder;
     }
 
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         _stringBuilder.Append("A");
-        return await HandleNext<TRequest, TResponse>(request);
+        return await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 }
 public class BBehavior : PipelineBehaviorAsync
@@ -33,10 +33,10 @@ public class BBehavior : PipelineBehaviorAsync
         _stringBuilder = stringBuilder;
     }
 
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         _stringBuilder.Append("B");
-        return await HandleNext<TRequest, TResponse>(request);
+        return await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 }
 
@@ -49,10 +49,10 @@ public class CBehavior : PipelineBehaviorAsync
         _stringBuilder = stringBuilder;
     }
 
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         _stringBuilder.Append("C");
-        return await HandleNext<TRequest, TResponse>(request);
+        return await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 }
 

@@ -19,7 +19,7 @@ public class MultipleHandlersTests
     public class RequestHandlerB : IRequestHandlerAsync<RequestB, string>
     {
         public int HandleCount;
-        public async Task<string> Handle(RequestB request)
+        public async Task<string> Handle(RequestB request, CancellationToken cancellationToken)
         {
             ++HandleCount;
             await Task.Yield();

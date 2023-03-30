@@ -16,8 +16,9 @@ public abstract class PipelineBehaviorAsync
     /// <typeparam name="TRequest">The type of the request.</typeparam>
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="request">The request to handle.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response to the request.</returns>
-    public abstract Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public abstract Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         where TRequest : IRequest<TResponse>;
 
     /// <summary>
@@ -26,13 +27,14 @@ public abstract class PipelineBehaviorAsync
     /// <typeparam name="TRequest">The type of the request.</typeparam>
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="request">The request to handle.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response to the request.</returns>
-    protected Task<TResponse> HandleNext<TRequest, TResponse>(TRequest request)
+    protected Task<TResponse> HandleNext<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         where TRequest : IRequest<TResponse>
     {
         if (Next is not null)
         {
-            return Next.Handle<TRequest, TResponse>(request);
+            return Next.Handle<TRequest, TResponse>(request, cancellationToken);
         }
         else
         {

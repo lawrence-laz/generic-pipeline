@@ -6,7 +6,8 @@ public class InvalidHandlerTests
 
     public class RequestHandler : IRequestHandlerAsync<Request>
     {
-        public Task<Unit> Handle(Request request) => throw new NotImplementedException();
+        public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
 
     [Fact]

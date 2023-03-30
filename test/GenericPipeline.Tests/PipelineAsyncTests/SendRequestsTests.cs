@@ -11,7 +11,7 @@ public class SendRequestsTests
         IRequestHandler<RequestB, int>
     {
         public int Expected { get; set; }
-        public Task<Unit> Handle(RequestA request) => Unit.ValueTask;
+        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken) => Unit.ValueTask;
         public int Handle(RequestB request) => Expected;
     }
 
@@ -19,10 +19,10 @@ public class SendRequestsTests
     {
         public int InvocationsCount { get; set; }
 
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request, cancellationToken);
         }
     }
 

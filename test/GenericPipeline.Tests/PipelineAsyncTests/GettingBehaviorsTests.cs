@@ -4,26 +4,26 @@ public class GettingBehaviorsTests
 {
     public class BehaviorA : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
-            => await HandleNext<TRequest, TResponse>(request);
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+            => await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 
     public class BehaviorB : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
-            => await HandleNext<TRequest, TResponse>(request);
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+            => await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 
     public class BehaviorC : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
-            => await HandleNext<TRequest, TResponse>(request);
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+            => await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 
     public class BehaviorD : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
-            => await HandleNext<TRequest, TResponse>(request);
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+            => await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 
     [Fact]

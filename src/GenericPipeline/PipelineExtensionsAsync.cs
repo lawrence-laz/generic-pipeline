@@ -84,10 +84,12 @@ public static class PipelineAsyncExtensions
     /// </summary>
     /// <param name="pipeline">The pipeline instance to use.</param>
     /// <param name="request">The request to send.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response of the request.</returns>
     public static async Task<object> SendAsync(
         this PipelineAsync pipeline,
-        object request)
+        object request,
+        CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -109,11 +111,25 @@ public static class PipelineAsyncExtensions
             .GetMethods()
             .First(method => method.Name == nameof(PipelineAsync.SendAsync) && method.GetGenericArguments().Length == 2)
             .MakeGenericMethod(requestType, responseType);
-        var task = (Task)sendMethod.Invoke(pipeline, new[] { request });
+        var task = (Task)sendMethod.Invoke(pipeline, new[] { request, cancellationToken });
         await task.ConfigureAwait(false);
         var resultProperty = typeof(Task<>).MakeGenericType(responseType).GetProperty(nameof(Task<object>.Result));
         var result = resultProperty.GetValue(task);
         return result;
     }
+
+    /// <summary>
+    /// Sends a request through the pipeline and returns the response.
+    /// This method is significantly slower than the generic variant, because
+    /// reflection is inevitable here. Use it only when the generic method does 
+    /// not suffice.
+    /// </summary>
+    /// <param name="pipeline">The pipeline instance to use.</param>
+    /// <param name="request">The request to send.</param>
+    /// <returns>The response of the request.</returns>
+    public static async Task<object> SendAsync(
+        this PipelineAsync pipeline,
+        object request)
+        => await pipeline.SendAsync(request, default).ConfigureAwait(false);
 }
 

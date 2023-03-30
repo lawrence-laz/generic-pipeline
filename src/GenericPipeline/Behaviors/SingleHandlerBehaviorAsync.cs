@@ -31,12 +31,13 @@ public class SingleHandlerBehaviorAsync<TRequestHandler> : PipelineBehaviorAsync
     /// <typeparam name="TRequest">The type of request to handle.</typeparam>
     /// <typeparam name="TResponse">The type of response to return.</typeparam>
     /// <param name="request">The request to handle.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response of the handled request.</returns>
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         if (Handler is IRequestHandlerAsync<TRequest, TResponse> handlerAsync)
         {
-            return await handlerAsync.Handle(request).ConfigureAwait(false);
+            return await handlerAsync.Handle(request, cancellationToken).ConfigureAwait(false);
         }
         else if (Handler is IRequestHandler<TRequest, TResponse> handler)
         {
@@ -44,7 +45,7 @@ public class SingleHandlerBehaviorAsync<TRequestHandler> : PipelineBehaviorAsync
         }
         else
         {
-            return await HandleNext<TRequest, TResponse>(request).ConfigureAwait(false);
+            return await HandleNext<TRequest, TResponse>(request, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -2,7 +2,7 @@ public record struct HelloRequestAsync(string Name) : IRequest<string>;
 
 public class HelloHandlerAsync : IRequestHandlerAsync<HelloRequestAsync, string>
 {
-    public async Task<string> Handle(HelloRequestAsync request)
+    public async Task<string> Handle(HelloRequestAsync request, CancellationToken cancellationToken)
     {
         await Task.Yield();
         return $"Hello, {request.Name}";
@@ -13,10 +13,10 @@ public class CountingBehaviorAsync : PipelineBehaviorAsync
 {
     public int Counter { get; private set; }
 
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         Counter++;
-        return await HandleNext<TRequest, TResponse>(request);
+        return await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 }
 

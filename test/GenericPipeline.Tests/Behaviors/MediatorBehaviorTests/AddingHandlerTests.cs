@@ -6,7 +6,8 @@ public class AddingHandlerTestsc
     public class NotHandler { }
     public class AsyncHandler : IRequestHandlerAsync<TestRequest>
     {
-        public Task<Unit> Handle(TestRequest request) => throw new NotImplementedException();
+        public Task<Unit> Handle(TestRequest request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
 
     [Fact]

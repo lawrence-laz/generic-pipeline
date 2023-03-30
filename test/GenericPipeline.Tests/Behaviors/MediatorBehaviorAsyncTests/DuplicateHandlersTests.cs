@@ -13,7 +13,8 @@ public class DuplicateHandlersTests
     }
     public class RequestHandlerAsync : IRequestHandlerAsync<Request>
     {
-        public Task<Unit> Handle(Request request) => throw new NotImplementedException();
+        public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
 
     [Fact]

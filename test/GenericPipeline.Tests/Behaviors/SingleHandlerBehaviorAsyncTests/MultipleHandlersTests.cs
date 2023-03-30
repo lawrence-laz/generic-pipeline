@@ -9,7 +9,7 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public Task<Unit> Handle(RequestA request)
+        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             return Task.FromResult(Unit.Value);
@@ -20,7 +20,7 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public async Task<Unit> Handle(RequestB request)
+        public async Task<Unit> Handle(RequestB request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             await Task.Yield();

@@ -7,11 +7,13 @@ public class GettingHandlerTests
     public record struct RequestC : IRequest;
     public class RequestHandlerA : IRequestHandlerAsync<RequestA>
     {
-        public Task<Unit> Handle(RequestA request) => throw new NotImplementedException();
+        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
     public class RequestHandlerB : IRequestHandlerAsync<RequestB>
     {
-        public Task<Unit> Handle(RequestB request) => throw new NotImplementedException();
+        public Task<Unit> Handle(RequestB request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
     public class RequestHandlerC : IRequestHandler<RequestC>
     {
