@@ -25,12 +25,7 @@ public class RegisterUserValidator : AbstractValidator<RegisterUser>
 public class RegistrationHandler : IRequestHandler<RegisterUser>
 {
     public HashSet<int> RegisteredUserIds { get; } = new();
-
-    public Unit Handle(RegisterUser request)
-    {
-        RegisteredUserIds.Add(request.Id);
-        return Unit.Value;
-    }
+    public void Handle(RegisterUser request) => RegisteredUserIds.Add(request.Id);
 }
 
 public class FluentValidationExample
@@ -43,7 +38,7 @@ public class FluentValidationExample
             .AppendFluentValidators(new RegisterUserValidator())
             .AppendHandler(handler);
 
-        pipeline.Send<RegisterUser, Unit>(new(
+        pipeline.Send<RegisterUser>(new(
             Id: 123,
             FirstName: "John",
             LastName: "Doe",
@@ -62,7 +57,7 @@ public class FluentValidationExample
             .AppendHandler(handler);
 
         var act = () =>
-            pipeline.Send<RegisterUser, Unit>(new(
+            pipeline.Send<RegisterUser>(new(
                 Id: 123,
                 FirstName: "", // <-------- Oops, missing first name
                 LastName: "Doe",

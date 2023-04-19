@@ -13,7 +13,7 @@ public class RemoveHandlersTests
           IRequestHandlerAsync<RequestC, string>
     {
         public Task<string> Handle(RequestA request, CancellationToken cancellationToken) => Task.FromResult(nameof(RequestA));
-        public Task<Unit> Handle(RequestB request, CancellationToken cancellationToken) => Unit.ValueTask;
+        public Task Handle(RequestB request, CancellationToken cancellationToken) => Task.CompletedTask;
         public Task<string> Handle(RequestC request, CancellationToken cancellationToken) => Task.FromResult(nameof(RequestC));
     }
 

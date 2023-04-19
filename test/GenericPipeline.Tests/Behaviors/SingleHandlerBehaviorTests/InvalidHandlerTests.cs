@@ -6,7 +6,7 @@ public class InvalidHandlerTests
 
     public class RequestHandler : IRequestHandler<Request>
     {
-        public Unit Handle(Request request) => Unit.Value;
+        public void Handle(Request request) { }
     }
 
     [Fact]

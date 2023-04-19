@@ -10,7 +10,7 @@ public class SendRequestsTests
         IRequestHandler<RequestA>,
         IRequestHandler<RequestB, int>
     {
-        public Unit Handle(RequestA request) => Unit.Value;
+        public void Handle(RequestA request) { }
         public int Handle(RequestB request) => 0;
     }
 

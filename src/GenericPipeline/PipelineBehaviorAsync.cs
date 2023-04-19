@@ -19,7 +19,9 @@ public abstract class PipelineBehaviorAsync
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response to the request.</returns>
     public abstract Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
-        where TRequest : IRequest<TResponse>;
+        where TRequest : notnull;
+
+    // MediatR removed TRequest : IRequest<TResponse> constraint to accomodate void handlers instead of Unit.
 
     /// <summary>
     /// Invokes the next behavior in the pipeline and returns its response.
@@ -30,7 +32,7 @@ public abstract class PipelineBehaviorAsync
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response to the request.</returns>
     protected Task<TResponse> HandleNext<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
-        where TRequest : IRequest<TResponse>
+        where TRequest : notnull
     {
         if (Next is not null)
         {

@@ -105,9 +105,17 @@ public sealed class PipelineAsync
     /// <param name="request">The request to send.</param>
     /// <returns>A unit value representing the completion of the request.</returns>
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
-    public Task<Unit> SendAsync<TRequest>(TRequest request)
-        where TRequest : IRequest<Unit>
-        => SendAsync(request, default);
+    public async Task SendAsync<TRequest>(TRequest request)
+        where TRequest : IRequest
+    {
+        if (_firstBehavior is null)
+        {
+            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
+        }
+        await _firstBehavior
+            .Handle<TRequest, Unit>(request, default)
+            .ConfigureAwait(false);
+    }
 
     /// <summary>
     /// Sends a request through the pipeline asynchronously.

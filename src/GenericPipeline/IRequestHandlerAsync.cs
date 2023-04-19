@@ -22,8 +22,10 @@ public interface IRequestHandlerAsync<TRequest, TResponse>
 /// Represents a handler for processing a request message asynchronously with a default response type of <see cref="Unit"/>.
 /// </summary>
 /// <typeparam name="TRequest">The type of the request message.</typeparam>
-public interface IRequestHandlerAsync<TRequest> : IRequestHandlerAsync<TRequest, Unit>
-    where TRequest : IRequest<Unit>
+public interface IRequestHandlerAsync<TRequest> : IRequestHandler
+    where TRequest : IRequest
 {
+    /// TODO
+    Task Handle(TRequest request, CancellationToken cancellationToken);
 }
 

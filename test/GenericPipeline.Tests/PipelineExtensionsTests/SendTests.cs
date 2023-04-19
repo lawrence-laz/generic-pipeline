@@ -13,10 +13,9 @@ public class SendTests
         public int RequestWithoutResponseCount { get; set; }
         public int RequestWithResponseCount { get; set; }
 
-        public Unit Handle(TestRequestWithoutResponse request)
+        public void Handle(TestRequestWithoutResponse request)
         {
             RequestWithoutResponseCount++;
-            return Unit.Value;
         }
 
         public int Handle(TestRequestWithResponse request)

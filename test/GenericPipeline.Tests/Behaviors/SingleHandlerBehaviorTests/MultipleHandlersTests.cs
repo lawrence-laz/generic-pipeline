@@ -8,20 +8,18 @@ public class MultipleHandlersTests
     public class RequestAHandler : IRequestHandler<RequestA>
     {
         public int InvocationsCount { get; set; }
-        public Unit Handle(RequestA request)
+        public void Handle(RequestA request)
         {
             ++InvocationsCount;
-            return Unit.Value;
         }
     }
 
     public class RequestBHandler : IRequestHandler<RequestB>
     {
         public int InvocationsCount { get; set; }
-        public Unit Handle(RequestB request)
+        public void Handle(RequestB request)
         {
             ++InvocationsCount;
-            return Unit.Value;
         }
     }
 

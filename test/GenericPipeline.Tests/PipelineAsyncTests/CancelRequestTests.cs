@@ -10,13 +10,12 @@ public class CancelRequestTests
     {
         public Stopwatch? Stopwatch { get; set; }
 
-        public async Task<Unit> Handle(LongRunningRequest request, CancellationToken cancellationToken)
+        public async Task Handle(LongRunningRequest request, CancellationToken cancellationToken)
         {
             try
             {
                 Stopwatch = Stopwatch.StartNew();
                 await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
-                return Unit.Value;
             }
             finally
             {

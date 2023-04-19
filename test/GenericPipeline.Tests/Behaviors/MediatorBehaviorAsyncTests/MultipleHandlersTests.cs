@@ -9,10 +9,9 @@ public class MultipleHandlersTests
     public class RequestHandlerA : IRequestHandler<RequestA>
     {
         public int HandleCount;
-        public Unit Handle(RequestA request)
+        public void Handle(RequestA request)
         {
             ++HandleCount;
-            return Unit.Value;
         }
     }
 
@@ -59,10 +58,9 @@ public class MultipleHandlersTests
     public async Task Send_RequestA_calls_RequestHandlerA_only()
     {
         // Act
-        var actual = await _pipeline.SendAsync<RequestA>(new());
+        await _pipeline.SendAsync<RequestA>(new());
 
         // Assert
-        actual.Should().Be(Unit.Value);
         _handlerA.HandleCount.Should().Be(1);
         _handlerB.HandleCount.Should().Be(0);
         _handlerC.HandleCount.Should().Be(0);

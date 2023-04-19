@@ -87,9 +87,15 @@ public sealed class Pipeline
     /// <param name="request">The request to send.</param>
     /// <returns>A unit value representing the completion of the request.</returns>
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
-    public Unit Send<TRequest>(TRequest request)
-        where TRequest : IRequest<Unit>
-        => Send<TRequest, Unit>(request);
+    public void Send<TRequest>(TRequest request)
+        where TRequest : IRequest
+    {
+        if (_firstBehavior is null)
+        {
+            throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
+        }
+        _firstBehavior.Handle<TRequest, Unit>(request);
+    }
 
     /// <summary>
     /// Gets the first behavior of the specified type in the pipeline.

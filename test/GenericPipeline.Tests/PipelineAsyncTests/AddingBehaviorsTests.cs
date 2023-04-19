@@ -15,8 +15,8 @@ public class AddingBehaviorsTestscclass
         IRequestHandler<RequestA>,
         IRequestHandlerAsync<RequestB>
     {
-        public Unit Handle(RequestA request) => Unit.Value;
-        public Task<Unit> Handle(RequestB request, CancellationToken cancellationToken) => Unit.ValueTask;
+        public void Handle(RequestA request) { }
+        public Task Handle(RequestB request, CancellationToken cancellationToken) => Task.CompletedTask;
     }
 
     public class NotHandler

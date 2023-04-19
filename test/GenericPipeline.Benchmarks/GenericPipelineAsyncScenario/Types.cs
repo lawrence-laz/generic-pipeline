@@ -1,14 +1,11 @@
 namespace GenericPipeline.Benchmarks.GenericPipelineAsyncScenario;
 
-public record struct DoWorkRequest() : IRequest<Unit>;
+public record struct DoWorkRequest() : IRequest;
 
 public class DoWorkHandler : IRequestHandlerAsync<DoWorkRequest>
 {
-    public async Task<Unit> Handle(DoWorkRequest request, CancellationToken cancellationToken)
-    {
-        await Workload.DoWorkAsync();
-        return Unit.Value;
-    }
+    public async Task Handle(DoWorkRequest request, CancellationToken cancellationToken)
+        => await Workload.DoWorkAsync();
 }
 
 public class DoWorkBehavior : PipelineBehaviorAsync

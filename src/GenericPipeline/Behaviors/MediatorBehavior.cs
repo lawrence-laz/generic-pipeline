@@ -15,7 +15,10 @@ public partial class MediatorBehavior : PipelineBehavior
     public override TResponse Handle<TRequest, TResponse>(TRequest request)
     {
         if (Handlers.TryGet<TRequest>(out var handler)
-            && handler is IRequestHandler<TRequest, TResponse> requestHandler)
+            && handler is IRequestHandler<TRequest, TResponse> requestHandler
+            || handler is IRequestHandler<TRequest> requestH)
+        // TODO: well this sucks, I need generic constraints in behaviors to be able to patterm match here
+        // But then behavior cannot eat both requests, with and without type
         {
             return requestHandler.Handle(request);
         }

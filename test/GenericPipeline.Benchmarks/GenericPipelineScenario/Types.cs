@@ -4,10 +4,9 @@ public record struct DoWorkRequest() : IRequest;
 
 public class DoWorkHandler : IRequestHandler<DoWorkRequest>
 {
-    public Unit Handle(DoWorkRequest request)
+    public void Handle(DoWorkRequest request)
     {
         Workload.DoWork();
-        return Unit.Value;
     }
 }
 

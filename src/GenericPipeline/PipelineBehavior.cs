@@ -17,8 +17,7 @@ public abstract class PipelineBehavior
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="request">The request to handle.</param>
     /// <returns>The response to the request.</returns>
-    public abstract TResponse Handle<TRequest, TResponse>(
-            TRequest request)
+    public abstract TResponse Handle<TRequest, TResponse>(TRequest request)
         where TRequest : IRequest<TResponse>;
 
     /// <summary>
@@ -28,7 +27,8 @@ public abstract class PipelineBehavior
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="request">The request to handle.</param>
     /// <returns>The response to the request.</returns>
-    protected TResponse HandleNext<TRequest, TResponse>(TRequest request) where TRequest : IRequest<TResponse>
+    protected TResponse HandleNext<TRequest, TResponse>(TRequest request)
+        where TRequest : IRequest<TResponse>
     {
         if (Next is not null)
         {

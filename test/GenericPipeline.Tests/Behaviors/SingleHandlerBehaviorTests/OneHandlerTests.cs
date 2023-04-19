@@ -7,11 +7,7 @@ public class OneHandlerTests
     public class RequestHandler : IRequestHandler<Request>
     {
         public int InvocationsCount { get; set; }
-        public Unit Handle(Request request)
-        {
-            ++InvocationsCount;
-            return Unit.Value;
-        }
+        public void Handle(Request request) => ++InvocationsCount;
     }
 
     [Fact]

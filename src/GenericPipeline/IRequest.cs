@@ -4,7 +4,7 @@
 /// Reperesents a request with a specified return type.
 /// </summary>
 /// <typeparam name="TResponse">The type of the request's response.</typeparam>
-public interface IRequest<TResponse>
+public interface IRequest<TResponse> : IBaseRequest
 {
 }
 
@@ -15,3 +15,8 @@ public interface IRequest : IRequest<Unit>
 {
 }
 
+
+/// TODO
+public interface IBaseRequest
+{
+}

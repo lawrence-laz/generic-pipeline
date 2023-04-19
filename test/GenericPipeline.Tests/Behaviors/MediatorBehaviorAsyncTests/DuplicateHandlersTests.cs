@@ -5,16 +5,15 @@ public class DuplicateHandlersTests
     public record struct Request : IRequest;
     public class RequestHandler : IRequestHandler<Request>
     {
-        public Unit Handle(Request request) => throw new NotImplementedException();
+        public void Handle(Request request) => throw new NotImplementedException();
     }
     public class OtherRequestHandler : IRequestHandler<Request>
     {
-        public Unit Handle(Request request) => throw new NotImplementedException();
+        public void Handle(Request request) => throw new NotImplementedException();
     }
     public class RequestHandlerAsync : IRequestHandlerAsync<Request>
     {
-        public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
-            => throw new NotImplementedException();
+        public Task Handle(Request request, CancellationToken cancellationToken) => throw new NotImplementedException();
     }
 
     [Fact]

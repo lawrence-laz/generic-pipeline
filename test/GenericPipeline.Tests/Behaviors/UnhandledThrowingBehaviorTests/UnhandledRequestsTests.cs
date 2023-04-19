@@ -7,11 +7,11 @@ public class UnhandledRequestsTests
     public record struct UnhandledRequest : IRequest;
     public class RequestHandlerA : IRequestHandler<RequestA>
     {
-        public Unit Handle(RequestA request) => throw new NotImplementedException();
+        public void Handle(RequestA request) => throw new NotImplementedException();
     }
     public class RequestHandlerB : IRequestHandler<RequestB>
     {
-        public Unit Handle(RequestB request) => throw new NotImplementedException();
+        public void Handle(RequestB request) => throw new NotImplementedException();
     }
 
     [Fact]

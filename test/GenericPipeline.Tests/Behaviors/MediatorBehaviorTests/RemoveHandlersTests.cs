@@ -13,7 +13,7 @@ public class RemoveHandlersTests
           IRequestHandler<RequestC, string>
     {
         public string Handle(RequestA request) => nameof(RequestA);
-        public Unit Handle(RequestB request) => Unit.Value;
+        public void Handle(RequestB request) { }
         public string Handle(RequestC request) => nameof(RequestC);
     }
 

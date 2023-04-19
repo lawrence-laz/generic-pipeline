@@ -8,10 +8,10 @@ public class OneHandlerTests
     {
         public int InvocationsCount { get; set; }
 
-        public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+        public Task Handle(Request request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
-            return Task.FromResult(Unit.Value);
+            return Task.CompletedTask;
         }
     }
 

@@ -11,7 +11,7 @@ public class SendRequestsTests
         IRequestHandler<RequestB, int>
     {
         public int Expected { get; set; }
-        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken) => Unit.ValueTask;
+        public Task Handle(RequestA request, CancellationToken cancellationToken) => Unit.ValueTask;
         public int Handle(RequestB request) => Expected;
     }
 

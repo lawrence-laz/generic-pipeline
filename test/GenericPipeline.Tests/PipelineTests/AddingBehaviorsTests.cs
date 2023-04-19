@@ -14,8 +14,8 @@ public class AddingBehaviorsTestscclass
         IRequestHandler<RequestA>,
         IRequestHandler<RequestB>
     {
-        public Unit Handle(RequestA request) => Unit.Value;
-        public Unit Handle(RequestB request) => Unit.Value;
+        public void Handle(RequestA request) { }
+        public void Handle(RequestB request) { }
     }
 
     public class NotHandler

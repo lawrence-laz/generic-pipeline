@@ -13,7 +13,9 @@ public partial class MediatorBehaviorAsync : PipelineBehaviorAsync
     /// <param name="request">The request to handle.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>The response of the handled request.</returns>
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(
+        TRequest request,
+        CancellationToken cancellationToken)
     {
         if (Handlers.TryGet<TRequest>(out var handler))
         {

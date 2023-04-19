@@ -60,7 +60,7 @@ public class CompareToOtherLibraries
     [Benchmark]
     public void GenericPipeline()
     {
-        _pipeline.Send<GenericPipelineScenario.DoWorkRequest, GenericPipeline.Unit>(new());
+        _pipeline.Send<GenericPipelineScenario.DoWorkRequest>(new());
     }
 
     [Benchmark]

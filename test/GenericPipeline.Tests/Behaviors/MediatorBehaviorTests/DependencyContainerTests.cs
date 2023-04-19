@@ -15,7 +15,7 @@ public class DependencyContainerTests
 
         public TestDependency TestDependency { get; }
 
-        public Unit Handle(TestRequest request) => throw new NotImplementedException();
+        public void Handle(TestRequest request) => throw new NotImplementedException();
     }
 
     [Fact]

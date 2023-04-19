@@ -27,8 +27,13 @@ public interface IRequestHandler<TRequest, out TResponse> : IRequestHandler
 /// Represents a handler for processing a request message with a default response type of <see cref="Unit"/>.
 /// </summary>
 /// <typeparam name="TRequest">The type of the request message.</typeparam>
-public interface IRequestHandler<TRequest> : IRequestHandler<TRequest, Unit>
-    where TRequest : IRequest<Unit>
+public interface IRequestHandler<TRequest> : IRequestHandler
+    where TRequest : IRequest
 {
+    /// <summary>
+    /// Processes the specified request message.
+    /// </summary>
+    /// <param name="request">The request message to process.</param>
+    void Handle(TRequest request);
 }
 

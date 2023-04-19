@@ -7,15 +7,15 @@ public class GettingHandlerTests
     public record struct RequestC : IRequest;
     public class RequestHandlerA : IRequestHandler<RequestA>
     {
-        public Unit Handle(RequestA request) => throw new NotImplementedException();
+        public void Handle(RequestA request) => throw new NotImplementedException();
     }
     public class RequestHandlerB : IRequestHandler<RequestB>
     {
-        public Unit Handle(RequestB request) => throw new NotImplementedException();
+        public void Handle(RequestB request) => throw new NotImplementedException();
     }
     public class RequestHandlerC : IRequestHandler<RequestC>
     {
-        public Unit Handle(RequestC request) => throw new NotImplementedException();
+        public void Handle(RequestC request) => throw new NotImplementedException();
     }
 
     [Fact]

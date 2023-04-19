@@ -9,10 +9,10 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken)
+        public Task Handle(RequestA request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
-            return Task.FromResult(Unit.Value);
+            return Task.CompletedTask;
         }
     }
 
@@ -20,11 +20,10 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public async Task<Unit> Handle(RequestB request, CancellationToken cancellationToken)
+        public async Task Handle(RequestB request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             await Task.Yield();
-            return Unit.Value;
         }
     }
 
