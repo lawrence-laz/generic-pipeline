@@ -13,12 +13,11 @@ using GenericPipelineAsyncScenario = GenericPipeline.Benchmarks.GenericPipelineA
 using GenericPipelineScenario = GenericPipeline.Benchmarks.GenericPipelineScenario;
 using MediatrAsyncScenario = GenericPipeline.Benchmarks.MediatrScenarioAsync;
 using MediatrScenario = GenericPipeline.Benchmarks.MediatrScenario;
+using MediatorScenario = GenericPipeline.Benchmarks.MediatorScenario;
+using MediatorAsyncScenario = GenericPipeline.Benchmarks.MediatorAsyncScenario;
 using MethodCallScenario = GenericPipeline.Benchmarks.MethodCallScenario;
 using PipelineNetAsyncScenario = GenericPipeline.Benchmarks.PipelineNetAsyncScenario;
 using PipelineNetScenario = GenericPipeline.Benchmarks.PipelineNetScenario;
-// var test = new BenchmarkTest();
-// test.Setup();
-// await test.GenericPipelineAsync();
 
 [SimpleJob(RuntimeMoniker.Net60)]
 [MemoryDiagnoser]
@@ -28,11 +27,13 @@ public class CompareToOtherLibraries
     public void Setup()
     {
         SetupGenericPipeline();
-        SetupGenericPipelineAsync();
-        SetupMediatr();
-        SetupMediatrAsync();
-        SetupPipelineNet();
-        SetupPipelineNetAsync();
+        // SetupGenericPipelineAsync();
+        // SetupMediatr();
+        // SetupMediatrAsync();
+        SetupMediator();
+        // SetupMediatorAsync();
+        // SetupPipelineNet();
+        // SetupPipelineNetAsync();
     }
 
     [Benchmark(Baseline = true)]
@@ -42,12 +43,12 @@ public class CompareToOtherLibraries
         MethodCallScenario.StaticMethods.DoWorkRequest();
     }
 
-    [Benchmark]
+/*     [Benchmark]
     public async Task MethodCallAsync()
     {
         await MethodCallScenario.StaticMethods.DoWorkBehaviorAsync();
         await MethodCallScenario.StaticMethods.DoWorkRequestAsync();
-    }
+    } */
 
     Pipeline _pipeline;
     private void SetupGenericPipeline()
@@ -63,7 +64,7 @@ public class CompareToOtherLibraries
         _pipeline.Send<GenericPipelineScenario.DoWorkRequest, GenericPipeline.Unit>(new());
     }
 
-    [Benchmark]
+/*     [Benchmark]
     public void GenericPipelineObject()
     {
         object request = new GenericPipelineScenario.DoWorkRequest();
@@ -83,7 +84,7 @@ public class CompareToOtherLibraries
     public async Task GenericPipelineAsync()
     {
         await _pipelineAsync.SendAsync<GenericPipelineAsyncScenario.DoWorkRequest, GenericPipeline.Unit>(new());
-    }
+    } */
 
     // [Benchmark]
     // public void GenericPipeline_MediatR_Style()
@@ -91,11 +92,11 @@ public class CompareToOtherLibraries
     //     _pipeline.Send(new GenericPipelineScenario.DoWorkRequest());
     // }
 
-    IServiceProvider _services;
-    IMediator _mediator;
+/*     IServiceProvider _mediatrServices;
+    IMediator _mediatrMediator;
     private void SetupMediatr()
     {
-        _services = new ServiceCollection()
+        _mediatrServices = new ServiceCollection()
             .AddMediatR(options =>
             {
                 options.Lifetime = ServiceLifetime.Singleton;
@@ -103,13 +104,57 @@ public class CompareToOtherLibraries
                 options.AddOpenBehavior(typeof(MediatrScenario.DoWorkBehavior<,>));
             })
             .BuildServiceProvider();
-        _mediator = _services.GetRequiredService<IMediator>();
+        _mediatrMediator = _mediatrServices.GetRequiredService<IMediator>();
     }
 
     [Benchmark]
     public async Task MediatR()
     {
-        await _mediator.Send(new MediatrScenario.DoWorkRequest());
+        await _mediatrMediator.Send(new MediatrScenario.DoWorkRequest());
+    } */
+
+    IServiceProvider _mediatorServices;
+    Mediator.Mediator _mediatorMediator;
+    private void SetupMediator()
+    {
+        _mediatorServices = new ServiceCollection()
+            .AddMediator(options =>
+            {
+                options.Namespace = "Mediator";
+                options.ServiceLifetime = ServiceLifetime.Singleton;
+            })
+            .AddSingleton(typeof(Mediator.IPipelineBehavior<,>), typeof(MediatorScenario.DoWorkBehavior<,>))
+            .BuildServiceProvider();
+
+        _mediatorMediator = _mediatorServices.GetRequiredService<Mediator.Mediator>();
+    }
+
+    [Benchmark]
+    public ValueTask<Mediator.Unit> Mediator()
+    {
+        return _mediatorMediator.Send(new MediatorScenario.DoWorkRequest());
+    }
+
+/*     IServiceProvider _mediatorAsyncServices;
+    Mediator.Mediator _mediatorAsyncMediator;
+    private void SetupMediatorAsync()
+    {
+        _mediatorAsyncServices = new ServiceCollection()
+            .AddMediator(options =>
+            {
+                options.Namespace = "Mediator";
+                options.ServiceLifetime = ServiceLifetime.Singleton;
+            })
+            .AddSingleton(typeof(Mediator.IPipelineBehavior<,>), typeof(MediatorAsyncScenario.DoWorkBehavior<,>))
+            .BuildServiceProvider();
+
+        _mediatorMediator = _mediatorAsyncServices.GetRequiredService<Mediator.Mediator>();
+    }
+
+    [Benchmark]
+    public async ValueTask<Mediator.Unit> MediatorAsync()
+    {
+        return await _mediatorAsyncMediator.Send(new MediatorScenario.DoWorkRequest());
     }
 
     IServiceProvider _servicesMediatrAsync;
@@ -160,6 +205,6 @@ public class CompareToOtherLibraries
     public async Task PipelineNetAsync()
     {
         await _pipelineNetAsync.Execute(new());
-    }
+    } */
 }
 

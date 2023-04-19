@@ -6,6 +6,11 @@
 
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+        <PackageReference Include="Mediator.Abstractions" Version="2.1.1" />
+        <PackageReference Include="Mediator.SourceGenerator" Version="2.1.1">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="PipelineNet" Version="0.9.0" />
