@@ -20,7 +20,7 @@ https://en.wikipedia.org/wiki/Pipeline_(software)
 ## 📦️ Get started
 Download from [nuget.org](https://www.nuget.org/packages/GenericPipeline/0.0.1-preview):
 ```
-dotnet add package GenericPipeline --prerelease
+dotnet add package GenericPipeline
 ```
 ## ⚖️ Feature parity
 |                                               | GenericPipeline | MediatR | MessagePipe | PipelineNet | Mediator |
