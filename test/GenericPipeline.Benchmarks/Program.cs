@@ -10,6 +10,7 @@ public static class BaseBehaviorExtensions
     // It is slower however and requires reflection.
     public static TResponse Send<TResponse>(this Pipeline pipeline, GenericPipeline.IRequest<TResponse> request)
     {
+        // TODO: try optimize this with caching and concurrentbag object pooling?
         var method = pipeline
             .GetType()
             .GetMethod(nameof(Pipeline.Send), BindingFlags.Public | BindingFlags.Instance)

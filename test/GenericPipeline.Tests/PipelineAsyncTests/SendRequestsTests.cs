@@ -103,6 +103,5 @@ public class SendRequestsTests
         // Assert
         await act.Should().ThrowAsync<ArgumentException>();
     }
-
 }
 

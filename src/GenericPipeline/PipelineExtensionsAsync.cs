@@ -76,6 +76,10 @@ public static class PipelineAsyncExtensions
     public static PipelineAsync ThrowOnUnhandledRequest(this PipelineAsync pipeline)
         => pipeline.AppendBehavior<UnhandledThrowingBehaviorAsync>();
 
+    // public static async Task<TResponse> SendAsync<TResponse>(
+    //                         IRequest<TResponse> request
+    //         )
+
     /// <summary>
     /// Sends a request through the pipeline and returns the response.
     /// This method is significantly slower than the generic variant, because
@@ -94,23 +98,22 @@ public static class PipelineAsyncExtensions
             throw new ArgumentNullException(nameof(request));
         }
         var requestType = request.GetType();
-        var responseType = requestType
+        var responseType = (requestType
             .GetInterfaces()
             .FirstOrDefault(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IRequest<>))
             ?.GetGenericArguments()
-            .FirstOrDefault();
-        if (responseType is null)
-        {
-            throw new ArgumentException(
+            .FirstOrDefault())
+            ?? throw new ArgumentException(
                 $"Request of type '{request.GetType().Name}' does not implement '{nameof(IRequest)}' interface.",
                 nameof(request));
-        }
         var sendMethod = typeof(PipelineAsync)
             .GetMethods()
             .First(method => method.Name == nameof(PipelineAsync.SendAsync) && method.GetGenericArguments().Length == 2)
-            .MakeGenericMethod(requestType, responseType);
-        var task = (Task)sendMethod.Invoke(pipeline, new[] { request });
+            .MakeGenericMethod(requestType, responseType); // TODO: Pre-cache reflection
+        var task = (Task)sendMethod.Invoke(pipeline, new[] { request }); // TODO: ConcurrentBag for object pooling arguments
         await task.ConfigureAwait(false);
+
+        // Pre-cache this?
         var resultProperty = typeof(Task<>).MakeGenericType(responseType).GetProperty(nameof(Task<object>.Result));
         var result = resultProperty.GetValue(task);
         return result;

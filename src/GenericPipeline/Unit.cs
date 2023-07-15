@@ -3,7 +3,7 @@ namespace GenericPipeline;
 /// <summary>
 /// Represents a unit value, which is a value that carries no information.
 /// </summary>
-public struct Unit : IEquatable<Unit>
+public readonly struct Unit : IEquatable<Unit>
 {
     /// <summary>
     /// Gets a singleton instance of the <see cref="Unit"/> struct.
