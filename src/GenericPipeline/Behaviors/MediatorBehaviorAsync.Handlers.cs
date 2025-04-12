@@ -93,4 +93,3 @@ public partial class MediatorBehaviorAsync : PipelineBehaviorAsync
         where TRequest : IRequest
         => RemoveHandlerByRequestType(typeof(TRequest));
 }
-

@@ -19,7 +19,7 @@ public class MultipleHandlersTests
     public class RequestHandlerB : IRequestHandlerAsync<RequestB, string>
     {
         public int HandleCount;
-        public async Task<string> Handle(RequestB request)
+        public async Task<string> Handle(RequestB request, CancellationToken cancellationToken)
         {
             ++HandleCount;
             await Task.Yield();
@@ -59,7 +59,7 @@ public class MultipleHandlersTests
     public async Task Send_RequestA_calls_RequestHandlerA_only()
     {
         // Act
-        var actual = await _pipeline.SendAsync<RequestA>(new());
+        var actual = await _pipeline.SendAsync<RequestA>(new(), CancellationToken.None);
 
         // Assert
         actual.Should().Be(Unit.Value);
@@ -72,7 +72,7 @@ public class MultipleHandlersTests
     public async Task Send_RequestB_calls_RequestHandlerB_only()
     {
         // Act
-        var actual = await _pipeline.SendAsync<RequestB, string>(new());
+        var actual = await _pipeline.SendAsync<RequestB, string>(new(), CancellationToken.None);
 
         // Assert
         actual.Should().Be("Hello");
@@ -85,7 +85,7 @@ public class MultipleHandlersTests
     public async Task Send_RequestC_calls_RequestHandlerC_only()
     {
         // Act
-        var actual = await _pipeline.SendAsync<RequestC, int>(new());
+        var actual = await _pipeline.SendAsync<RequestC, int>(new(), CancellationToken.None);
 
         // Assert
         actual.Should().Be(1);
@@ -94,4 +94,3 @@ public class MultipleHandlersTests
         _handlerC.HandleCount.Should().Be(1);
     }
 }
-

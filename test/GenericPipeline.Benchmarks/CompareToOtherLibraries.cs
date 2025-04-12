@@ -82,7 +82,7 @@ public class CompareToOtherLibraries
     [Benchmark]
     public async Task GenericPipelineAsync()
     {
-        await _pipelineAsync.SendAsync<GenericPipelineAsyncScenario.DoWorkRequest, GenericPipeline.Unit>(new());
+        await _pipelineAsync.SendAsync<GenericPipelineAsyncScenario.DoWorkRequest, GenericPipeline.Unit>(new(), CancellationToken.None);
     }
 
     // [Benchmark]
@@ -162,4 +162,3 @@ public class CompareToOtherLibraries
         await _pipelineNetAsync.Execute(new());
     }
 }
-

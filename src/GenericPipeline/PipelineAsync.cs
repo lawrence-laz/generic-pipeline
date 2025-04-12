@@ -69,16 +69,17 @@ public sealed class PipelineAsync
     /// <typeparam name="TRequest">The type of the request.</typeparam>
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="request">The request to send.</param>
+    /// <param name="cancellationToken">The token to cancel the request with.</param>
     /// <returns>The response of the request.</returns>
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
-    public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request)
+    public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         where TRequest : IRequest<TResponse>
     {
         if (_firstBehavior is null)
         {
             throw new InvalidOperationException("Cannot send the request. The pipeline does not have any behaviors attached.");
         }
-        return await _firstBehavior.Handle<TRequest, TResponse>(request).ConfigureAwait(false);
+        return await _firstBehavior.Handle<TRequest, TResponse>(request, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -86,11 +87,12 @@ public sealed class PipelineAsync
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
     /// <param name="request">The request to send.</param>
+    /// <param name="cancellationToken">The token to cancel the request with.</param>
     /// <returns>A unit value representing the completion of the request.</returns>
     /// <exception cref="Exception">Thrown when the pipeline has no behaviors.</exception>
-    public Task<Unit> SendAsync<TRequest>(TRequest request)
+    public Task<Unit> SendAsync<TRequest>(TRequest request, CancellationToken cancellationToken)
         where TRequest : IRequest<Unit>
-        => SendAsync<TRequest, Unit>(request);
+        => SendAsync<TRequest, Unit>(request, cancellationToken);
 
     /// <summary>
     /// Gets the handler of the specified type from the pipeline.
@@ -162,4 +164,3 @@ public sealed class PipelineAsync
         return last;
     }
 }
-

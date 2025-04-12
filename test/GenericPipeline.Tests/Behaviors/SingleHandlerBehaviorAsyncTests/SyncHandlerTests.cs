@@ -31,11 +31,10 @@ public class SyncHandlerTests
             .AppendHandler(handler);
 
         // Act
-        var actual = await pipeline.SendAsync<Request, string>(new());
+        var actual = await pipeline.SendAsync<Request, string>(new(), CancellationToken.None);
 
         // Assert
         actual.Should().Be(expected);
         handler.InvocationsCount.Should().Be(1);
     }
 }
-

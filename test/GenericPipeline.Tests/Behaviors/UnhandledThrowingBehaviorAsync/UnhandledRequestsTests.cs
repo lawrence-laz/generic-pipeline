@@ -25,7 +25,7 @@ public class UnhandledRequestsTests
             .ThrowOnUnhandledRequest();
 
         // Act
-        var act = async () => await pipeline.SendAsync<UnhandledRequest>(new());
+        var act = async () => await pipeline.SendAsync<UnhandledRequest>(new(), CancellationToken.None);
 
         // Assert
         await act.Should().ThrowExactlyAsync<UnhandledRequestException>();

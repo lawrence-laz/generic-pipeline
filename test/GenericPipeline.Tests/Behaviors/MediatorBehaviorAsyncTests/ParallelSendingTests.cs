@@ -11,7 +11,7 @@ public class ParallelSendingTests
     public class RequestHandlerA : IRequestHandlerAsync<RequestA, string>
     {
         public int HandleCount;
-        public async Task<string> Handle(RequestA request)
+        public async Task<string> Handle(RequestA request, CancellationToken cancellationToken)
         {
             await Task.Yield();
             ++HandleCount;
@@ -22,7 +22,7 @@ public class ParallelSendingTests
     public class RequestHandlerB : IRequestHandlerAsync<RequestB, string>
     {
         public int HandleCount;
-        public async Task<string> Handle(RequestB request)
+        public async Task<string> Handle(RequestB request, CancellationToken cancellationToken)
         {
             await Task.Yield();
             ++HandleCount;
@@ -33,7 +33,7 @@ public class ParallelSendingTests
     public class RequestHandlerC : IRequestHandlerAsync<RequestC, string>
     {
         public int HandleCount;
-        public async Task<string> Handle(RequestC request)
+        public async Task<string> Handle(RequestC request, CancellationToken cancellationToken)
         {
             await Task.Yield();
             ++HandleCount;
@@ -64,9 +64,9 @@ public class ParallelSendingTests
     {
         // Act
         var tasks = new[] {
-            _pipeline.SendAsync<RequestA, string>(new()),
-            _pipeline.SendAsync<RequestB, string>(new()),
-            _pipeline.SendAsync<RequestC, string>(new()),
+            _pipeline.SendAsync<RequestA, string>(new(), CancellationToken.None),
+            _pipeline.SendAsync<RequestB, string>(new(), CancellationToken.None),
+            _pipeline.SendAsync<RequestC, string>(new(), CancellationToken.None),
         };
         await Task.WhenAll(tasks);
 
@@ -81,4 +81,3 @@ public class ParallelSendingTests
         });
     }
 }
-

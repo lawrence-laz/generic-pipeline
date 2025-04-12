@@ -6,7 +6,7 @@ public class AddingHandlerTestsc
     public class NotHandler { }
     public class AsyncHandler : IRequestHandlerAsync<TestRequest>
     {
-        public Task<Unit> Handle(TestRequest request) => throw new NotImplementedException();
+        public Task<Unit> Handle(TestRequest request, CancellationToken cancellationToken) => throw new NotImplementedException();
     }
 
     [Fact]
@@ -35,4 +35,3 @@ public class AddingHandlerTestsc
         act.Should().Throw<ArgumentException>("because the provided object is not a handler");
     }
 }
-

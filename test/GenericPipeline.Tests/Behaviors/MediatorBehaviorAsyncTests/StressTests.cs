@@ -22,9 +22,9 @@ public class StressTests
           IRequestHandlerAsync<Request2, string>,
           IRequestHandlerAsync<Request3, string>
     {
-        public Task<string> Handle(Request1 request) => Task.FromResult($"{request.Input} - OK");
-        public Task<string> Handle(Request2 request) => Task.FromResult($"{request.Input} - OK");
-        public Task<string> Handle(Request3 request) => Task.FromResult($"{request.Input} - OK");
+        public Task<string> Handle(Request1 request, CancellationToken cancellationToken) => Task.FromResult($"{request.Input} - OK");
+        public Task<string> Handle(Request2 request, CancellationToken cancellationToken) => Task.FromResult($"{request.Input} - OK");
+        public Task<string> Handle(Request3 request, CancellationToken cancellationToken) => Task.FromResult($"{request.Input} - OK");
     }
 
     public class RequestHandler2
@@ -42,8 +42,8 @@ public class StressTests
           IRequestHandlerAsync<Request8, string>,
           IRequestHandler<Request9, string>
     {
-        public Task<string> Handle(Request7 request) => Task.FromResult($"{request.Input} - OK");
-        public Task<string> Handle(Request8 request) => Task.FromResult($"{request.Input} - OK");
+        public Task<string> Handle(Request7 request, CancellationToken cancellationToken) => Task.FromResult($"{request.Input} - OK");
+        public Task<string> Handle(Request8 request, CancellationToken cancellationToken) => Task.FromResult($"{request.Input} - OK");
         public string Handle(Request9 request) => $"{request.Input} - OK";
     }
 
@@ -54,28 +54,28 @@ public class StressTests
 
     public class Behavior1 : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             await Task.Yield();
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request, cancellationToken);
         }
     }
 
     public class Behavior2 : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             await Task.Yield();
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request, cancellationToken);
         }
     }
 
     public class Behavior3 : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             await Task.Yield();
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request, cancellationToken);
         }
     }
 
@@ -113,7 +113,7 @@ public class StressTests
         {
             foreach (var request in requests)
             {
-                var result = await pipeline.SendAsync<TRequest, string>(request);
+                var result = await pipeline.SendAsync<TRequest, string>(request, CancellationToken.None);
                 results.TryAdd(request, result);
             }
         }
@@ -143,4 +143,3 @@ public class StressTests
         }
     }
 }
-

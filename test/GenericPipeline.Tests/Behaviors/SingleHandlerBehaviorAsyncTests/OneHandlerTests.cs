@@ -8,7 +8,7 @@ public class OneHandlerTests
     {
         public int InvocationsCount { get; set; }
 
-        public Task<Unit> Handle(Request request)
+        public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             return Task.FromResult(Unit.Value);
@@ -23,10 +23,9 @@ public class OneHandlerTests
             .AppendHandler<RequestHandler>();
 
         // Act
-        await pipeline.SendAsync<Request>(new());
+        await pipeline.SendAsync<Request>(new(), CancellationToken.None);
 
         // Assert
         pipeline.GetHandler<RequestHandler>().InvocationsCount.Should().Be(1);
     }
 }
-

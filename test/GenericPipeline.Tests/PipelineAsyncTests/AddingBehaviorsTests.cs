@@ -4,7 +4,8 @@ public class AddingBehaviorsTestscclass
 {
     public class TestBehavior : PipelineBehaviorAsync
     {
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request) => await HandleNext<TRequest, TResponse>(request);
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
+            => await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 
     public record struct RequestA() : IRequest;
@@ -15,7 +16,7 @@ public class AddingBehaviorsTestscclass
         IRequestHandlerAsync<RequestB>
     {
         public Unit Handle(RequestA request) => Unit.Value;
-        public Task<Unit> Handle(RequestB request) => Unit.ValueTask;
+        public Task<Unit> Handle(RequestB request, CancellationToken cancellationToken) => Unit.ValueTask;
     }
 
     public class NotHandler

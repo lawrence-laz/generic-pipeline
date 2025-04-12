@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
+
 namespace GenericPipeline.Tests.Behaviors.MediatorBehaviorAsyncTests;
 
 public class RemoveHandlersTests
@@ -12,15 +14,15 @@ public class RemoveHandlersTests
           IRequestHandlerAsync<RequestB>,
           IRequestHandlerAsync<RequestC, string>
     {
-        public Task<string> Handle(RequestA request) => Task.FromResult(nameof(RequestA));
-        public Task<Unit> Handle(RequestB request) => Unit.ValueTask;
-        public Task<string> Handle(RequestC request) => Task.FromResult(nameof(RequestC));
+        public Task<string> Handle(RequestA request, CancellationToken cancellationToken) => Task.FromResult(nameof(RequestA));
+        public Task<Unit> Handle(RequestB request, CancellationToken cancellationToken) => Unit.ValueTask;
+        public Task<string> Handle(RequestC request, CancellationToken cancellationToken) => Task.FromResult(nameof(RequestC));
     }
 
     public class RequestHandlerD
         : IRequestHandlerAsync<RequestD, string>
     {
-        public Task<string> Handle(RequestD request) => Task.FromResult(nameof(RequestD));
+        public Task<string> Handle(RequestD request, CancellationToken cancellationToken) => Task.FromResult(nameof(RequestD));
     }
 
     [Fact]
@@ -43,11 +45,11 @@ public class RemoveHandlersTests
         // Assert
         pipeline.GetHandler<RequestHandlerABC>()
             .Should().Be(handlerABC, "because it was removed for a single request only");
-        await pipeline.Invoking(x => x.SendAsync<RequestA, string>(new()))
+        await pipeline.Invoking(x => x.SendAsync<RequestA, string>(new(), CancellationToken.None))
             .Should().ThrowAsync<UnhandledRequestException>("because the handler was removed for this request");
-        await pipeline.Invoking(x => x.SendAsync<RequestB>(new()))
+        await pipeline.Invoking(x => x.SendAsync<RequestB>(new(), CancellationToken.None))
             .Should().ThrowAsync<UnhandledRequestException>("because the handler was removed for this request");
-        var requestCResponse = await pipeline.SendAsync<RequestC, string>(new());
+        var requestCResponse = await pipeline.SendAsync<RequestC, string>(new(), CancellationToken.None);
         requestCResponse.Should().Be(nameof(RequestC), "because the handler was not removed for this request");
     }
 
@@ -70,14 +72,13 @@ public class RemoveHandlersTests
         // Assert
         pipeline.Invoking(x => x.GetHandler<RequestHandlerABC>())
             .Should().Throw<HandlerNotFoundException>("because the handler was completely removed");
-        await pipeline.Invoking(x => x.SendAsync<RequestA, string>(new()))
+        await pipeline.Invoking(x => x.SendAsync<RequestA, string>(new(), CancellationToken.None))
             .Should().ThrowAsync<UnhandledRequestException>("because the handler was removed");
-        await pipeline.Invoking(x => x.SendAsync<RequestB>(new()))
+        await pipeline.Invoking(x => x.SendAsync<RequestB>(new(), CancellationToken.None))
             .Should().ThrowAsync<UnhandledRequestException>("because the handler was removed");
-        await pipeline.Invoking(x => x.SendAsync<RequestC, string>(new()))
+        await pipeline.Invoking(x => x.SendAsync<RequestC, string>(new(), CancellationToken.None))
             .Should().ThrowAsync<UnhandledRequestException>("because the handler was removed");
-        var requestDResponse = await pipeline.SendAsync<RequestD, string>(new());
+        var requestDResponse = await pipeline.SendAsync<RequestD, string>(new(), CancellationToken.None);
         requestDResponse.Should().Be(nameof(RequestD), "because other handlers were not removed");
     }
 }
-

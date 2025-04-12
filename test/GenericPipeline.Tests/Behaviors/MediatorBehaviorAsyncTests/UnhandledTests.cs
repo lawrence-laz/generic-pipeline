@@ -8,10 +8,10 @@ public class UnhandledTests
     {
         public bool WasCalled;
 
-        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+        public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             WasCalled = true;
-            return await HandleNext<TRequest, TResponse>(request);
+            return await HandleNext<TRequest, TResponse>(request, CancellationToken.None);
         }
     }
 
@@ -25,7 +25,7 @@ public class UnhandledTests
             .AppendBehavior(behaviorAfterMediator);
 
         // Act
-        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new());
+        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new(), CancellationToken.None);
 
         // Assert
         await act.Should().NotThrowAsync("because behaviors do not throw by default when requests are unhandled");
@@ -42,7 +42,7 @@ public class UnhandledTests
             .AppendBehavior(behaviorAfterMediator);
 
         // Act
-        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new());
+        var act = () => pipeline.SendAsync<RequestWithoutHandler>(new(), CancellationToken.None);
 
         // Assert
         await act.Should().ThrowAsync<UnhandledRequestException>(

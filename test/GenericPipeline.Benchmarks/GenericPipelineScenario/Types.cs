@@ -19,4 +19,3 @@ public class DoWorkBehavior : PipelineBehavior
         return HandleNext<TRequest, TResponse>(request);
     }
 }
-

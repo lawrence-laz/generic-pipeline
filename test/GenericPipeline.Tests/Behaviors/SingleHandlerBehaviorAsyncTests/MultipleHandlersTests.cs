@@ -9,7 +9,7 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public Task<Unit> Handle(RequestA request)
+        public Task<Unit> Handle(RequestA request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             return Task.FromResult(Unit.Value);
@@ -20,7 +20,7 @@ public class MultipleHandlersTests
     {
         public int InvocationsCount { get; set; }
 
-        public async Task<Unit> Handle(RequestB request)
+        public async Task<Unit> Handle(RequestB request, CancellationToken cancellationToken)
         {
             ++InvocationsCount;
             await Task.Yield();
@@ -37,7 +37,7 @@ public class MultipleHandlersTests
             .AppendHandler<RequestBHandler>();
 
         // Act
-        await pipeline.SendAsync<RequestA>(new());
+        await pipeline.SendAsync<RequestA>(new(), CancellationToken.None);
 
         // Assert
         pipeline.GetHandler<RequestAHandler>().InvocationsCount.Should().Be(1);
@@ -53,11 +53,10 @@ public class MultipleHandlersTests
             .AppendHandler<RequestBHandler>();
 
         // Act
-        await pipeline.SendAsync<RequestB>(new());
+        await pipeline.SendAsync<RequestB>(new(), CancellationToken.None);
 
         // Assert
         pipeline.GetHandler<RequestAHandler>().InvocationsCount.Should().Be(0);
         pipeline.GetHandler<RequestBHandler>().InvocationsCount.Should().Be(1);
     }
 }
-

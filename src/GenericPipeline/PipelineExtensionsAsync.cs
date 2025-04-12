@@ -84,10 +84,12 @@ public static class PipelineAsyncExtensions
     /// </summary>
     /// <param name="pipeline">The pipeline instance to use.</param>
     /// <param name="request">The request to send.</param>
+    /// <param name="cancellationToken">The token to cancel the request with.</param>
     /// <returns>The response of the request.</returns>
     public static async Task<object> SendAsync(
         this PipelineAsync pipeline,
-        object request)
+        object request,
+        CancellationToken cancellationToken)
     {
         if (request is null)
         {
@@ -109,11 +111,10 @@ public static class PipelineAsyncExtensions
             .GetMethods()
             .First(method => method.Name == nameof(PipelineAsync.SendAsync) && method.GetGenericArguments().Length == 2)
             .MakeGenericMethod(requestType, responseType);
-        var task = (Task)sendMethod.Invoke(pipeline, new[] { request });
+        var task = (Task)sendMethod.Invoke(pipeline, new[] { request, cancellationToken });
         await task.ConfigureAwait(false);
         var resultProperty = typeof(Task<>).MakeGenericType(responseType).GetProperty(nameof(Task<object>.Result));
         var result = resultProperty.GetValue(task);
         return result;
     }
 }
-

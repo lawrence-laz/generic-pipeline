@@ -2,7 +2,7 @@ public record struct HelloRequestAsync(string Name) : IRequest<string>;
 
 public class HelloHandlerAsync : IRequestHandlerAsync<HelloRequestAsync, string>
 {
-    public async Task<string> Handle(HelloRequestAsync request)
+    public async Task<string> Handle(HelloRequestAsync request, CancellationToken cancellationToken)
     {
         await Task.Yield();
         return $"Hello, {request.Name}";
@@ -13,10 +13,10 @@ public class CountingBehaviorAsync : PipelineBehaviorAsync
 {
     public int Counter { get; private set; }
 
-    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request)
+    public override async Task<TResponse> Handle<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
     {
         Counter++;
-        return await HandleNext<TRequest, TResponse>(request);
+        return await HandleNext<TRequest, TResponse>(request, cancellationToken);
     }
 }
 
@@ -32,7 +32,7 @@ public class HelloWorldCounterTestsAsync
             .AppendHandler<HelloHandlerAsync>();
 
         // Act
-        var actual = await sut.SendAsync<HelloRequestAsync, string>(new(name));
+        var actual = await sut.SendAsync<HelloRequestAsync, string>(new(name), CancellationToken.None);
 
         // Assert
         actual.Should().Be($"Hello, {name}");
@@ -54,7 +54,7 @@ public class HelloWorldCounterTestsAsync
         // Act
         for (var i = 0; i < expectedCount; ++i)
         {
-            actuals.Add(await sut.SendAsync<HelloRequestAsync, string>(new(name)));
+            actuals.Add(await sut.SendAsync<HelloRequestAsync, string>(new(name), CancellationToken.None));
         }
 
         // Assert
@@ -63,4 +63,3 @@ public class HelloWorldCounterTestsAsync
             .Counter.Should().Be(expectedCount, $"because the pipeline handled {expectedCount} requests");
     }
 }
-
