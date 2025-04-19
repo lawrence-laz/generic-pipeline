@@ -59,10 +59,9 @@ public class MultipleHandlersTests
     public async Task Send_RequestA_calls_RequestHandlerA_only()
     {
         // Act
-        var actual = await _pipeline.SendAsync<RequestA>(new(), CancellationToken.None);
+        await _pipeline.SendAsync<RequestA>(new(), CancellationToken.None);
 
         // Assert
-        actual.Should().Be(Unit.Value);
         _handlerA.HandleCount.Should().Be(1);
         _handlerB.HandleCount.Should().Be(0);
         _handlerC.HandleCount.Should().Be(0);
